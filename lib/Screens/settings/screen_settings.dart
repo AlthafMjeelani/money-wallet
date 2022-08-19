@@ -75,7 +75,8 @@ class _ScreenSettingsState extends State<ScreenSettings> {
               leading: const Icon(Icons.share_outlined),
               title: const Text('Invite a friend'),
               onTap: () {
-                Share.share('Money wallet');
+                Share.share(
+                    'https://play.google.com/store/apps/details?id=in.althaf.money_wallet');
               },
             ),
             ListTile(
