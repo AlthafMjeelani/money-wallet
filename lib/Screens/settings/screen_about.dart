@@ -15,7 +15,7 @@ class About {
             ListTile(
               leading: Image.asset('lib/assets/images/app logo.png'),
               title: const Text('Money Wallet'),
-              subtitle: const Text('v.1.0.0'),
+              subtitle: const Text('v.1.0.1'),
             ),
             const SizedBox(
               height: 20,

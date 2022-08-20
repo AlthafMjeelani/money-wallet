@@ -35,7 +35,7 @@ class _ScreenSplashState extends State<ScreenSplash> {
                   ),
                   AnimatedTextKit(animatedTexts: [
                     ColorizeAnimatedText(
-                      'money wallet',
+                      'Money Wallet',
                       textStyle: const TextStyle(
                         fontSize: 30,
                       ),

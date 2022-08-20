@@ -76,7 +76,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
               title: const Text('Invite a friend'),
               onTap: () {
                 Share.share(
-                    'https://play.google.com/store/apps/details?id=in.althaf.money_wallet');
+                    'Money Wallet\n, https://play.google.com/store/apps/details?id=in.althaf.money_wallet');
               },
             ),
             ListTile(
@@ -102,7 +102,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             ),
             const Spacer(),
             const Center(
-              child: Text('v.1.0.2'),
+              child: Text('v.1.0.1'),
             ),
           ],
         ),
@@ -198,6 +198,15 @@ class _ScreenSettingsState extends State<ScreenSettings> {
                             });
                             if (!mounted) {}
                             Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              duration: Duration(seconds: 1),
+                              elevation: 20,
+                              content: Text(
+                                'successfully added to reminder',
+                              ),
+                              backgroundColor: Colors.green,
+                            ));
                           }
                         },
                         child: const Text('SAVE'),

@@ -20,6 +20,14 @@ class DeleteCategory {
             TextButton(
               onPressed: () async {
                 CategoryDb.instence.deleteCategory(modal.id);
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  duration: Duration(seconds: 1),
+                  elevation: 20,
+                  content: Text(
+                    'successfully deleted to category',
+                  ),
+                  backgroundColor: Colors.green,
+                ));
 
                 Navigator.of(context).pop();
               },
