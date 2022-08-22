@@ -102,7 +102,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             ),
             const Spacer(),
             const Center(
-              child: Text('v.1.0.1'),
+              child: Text('v.1.0.2'),
             ),
           ],
         ),
