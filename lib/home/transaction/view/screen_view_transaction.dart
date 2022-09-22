@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:moneywallet/Screens/transaction/screen_add_transaction.dart';
-import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/home/transaction/view/screen_add_transaction.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../category/model/category_typemodel.dart';
+import '../model/transaction_modal.dart';
 
 class ScreenViewTransaction extends StatefulWidget {
   const ScreenViewTransaction({Key? key}) : super(key: key);

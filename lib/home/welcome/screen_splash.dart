@@ -1,8 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:moneywallet/Screens/Homescreen/screen_bottomvavigation.dart';
-import 'package:moneywallet/Screens/welcome/screen_login.dart';
+import 'package:moneywallet/home/welcome/screen_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Homescreen/screen_bottomvavigation.dart';
 
 class ScreenSplash extends StatefulWidget {
   const ScreenSplash({Key? key}) : super(key: key);

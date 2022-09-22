@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/Screens/statistics/screen_nodatafound.dart';
 import 'package:moneywallet/widget/screen_delete_items.dart';
 import 'package:moneywallet/db/functions/category/category_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_modal.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../statistics/screen_nodatafound.dart';
+import '../model/category_modal.dart';
 
 class IncomeCategoryList extends StatefulWidget {
   const IncomeCategoryList({

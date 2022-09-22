@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:moneywallet/Screens/Homescreen/screen_bottomvavigation.dart';
-import 'package:moneywallet/Screens/category/screen_category.dart';
-import 'package:moneywallet/db/functions/category/category_db.dart';
-import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_modal.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
+import 'package:moneywallet/DB/functions/category/category_db.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../home/Homescreen/screen_bottomvavigation.dart';
+import '../../category/model/category_modal.dart';
+import '../../category/model/category_typemodel.dart';
+import '../../category/view/screen_category.dart';
+import '../model/transaction_modal.dart';
 
 enum ActionType { addscreen, editscreen }
 

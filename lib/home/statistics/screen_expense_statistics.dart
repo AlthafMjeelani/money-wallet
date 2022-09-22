@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/Screens/statistics/sorted_statistics_items.dart';
 import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/home/statistics/sorted_statistics_items.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class ScreenExpenseStatistics extends StatelessWidget {

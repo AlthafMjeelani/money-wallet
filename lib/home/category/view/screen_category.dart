@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/Screens/category/expense_categorylist_widget.dart';
-import 'package:moneywallet/Screens/category/income_categorylist_widget.dart';
 import 'package:moneywallet/db/functions/category/category_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:moneywallet/widget/tabbar_widget.dart';
-
-import '../../models/categorytypemodal/category_modal.dart';
+import '../model/category_modal.dart';
+import '../model/category_typemodel.dart';
+import 'expense_categorylist_widget.dart';
+import 'income_categorylist_widget.dart';
 
 class ScreenCategory extends StatefulWidget {
   const ScreenCategory({Key? key}) : super(key: key);

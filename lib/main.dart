@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneywallet/Screens/reminder/reminder_local_notification.dart';
-import 'package:moneywallet/Screens/welcome/screen_splash.dart';
-import 'package:moneywallet/models/categorytypemodal/category_modal.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
+import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
+import 'package:moneywallet/home/welcome/screen_splash.dart';
 import 'package:sizer/sizer.dart';
+
+import 'home/category/model/category_modal.dart';
+import 'home/category/model/category_typemodel.dart';
+import 'home/transaction/model/transaction_modal.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

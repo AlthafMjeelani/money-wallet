@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:moneywallet/Screens/transaction/screen_add_transaction.dart';
-import 'package:moneywallet/Screens/transaction/screen_view_transaction.dart';
 import 'package:moneywallet/db/functions/category/category_db.dart';
 import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
 import 'package:moneywallet/widget/home_card_widget.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+
+import '../category/model/category_typemodel.dart';
+import '../transaction/model/transaction_modal.dart';
+import '../transaction/view/screen_add_transaction.dart';
+import '../transaction/view/screen_view_transaction.dart';
 
 class ScreenHome extends StatefulWidget {
   const ScreenHome({Key? key}) : super(key: key);

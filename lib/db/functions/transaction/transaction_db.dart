@@ -1,20 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
+
+import '../../../home/category/model/category_typemodel.dart';
+import '../../../home/transaction/model/transaction_modal.dart';
 
 // ignore: constant_identifier_names
 const TRANSACTION_DB_NAME = 'TRANSACTION-DB';
 
-abstract class TransactionDbFunctions {
-  Future<List<TransactionModel>> getAllTransaction();
-  Future<void> addTransaction(TransactionModel value);
-  Future<void> deleteTransactoin(String index);
-  Future<void> addTotalTransaction();
-  Future<void> refreshUI();
-}
-
-class TransactionDb implements TransactionDbFunctions {
+class TransactionDb {
   TransactionDb._internal();
   static TransactionDb instence = TransactionDb._internal();
   factory TransactionDb() {

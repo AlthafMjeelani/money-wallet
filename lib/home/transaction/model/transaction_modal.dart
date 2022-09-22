@@ -1,6 +1,7 @@
 import 'package:hive_flutter/adapters.dart';
-import 'package:moneywallet/models/categorytypemodal/category_modal.dart';
-import 'package:moneywallet/models/categorytypemodal/category_typemodel.dart';
+
+import '../../category/model/category_modal.dart';
+import '../../category/model/category_typemodel.dart';
 part 'transaction_modal.g.dart';
 
 @HiveType(typeId: 3)

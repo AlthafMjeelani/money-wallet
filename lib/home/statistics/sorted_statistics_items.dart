@@ -1,4 +1,4 @@
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
+import '../transaction/model/transaction_modal.dart';
 
 class ChartedData {
   final num amount;

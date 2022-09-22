@@ -1,18 +1,18 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
+import 'package:moneywallet/home/settings/screen_about.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneywallet/Screens/reminder/reminder_local_notification.dart';
-import 'package:moneywallet/Screens/settings/screen_about.dart';
-import 'package:moneywallet/Screens/welcome/screen_splash.dart';
 import 'package:moneywallet/db/functions/category/category_db.dart';
 import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
-import 'package:moneywallet/models/categorytypemodal/category_modal.dart';
-import 'package:moneywallet/models/transactionmodal/transaction_modal.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../category/model/category_modal.dart';
+import '../transaction/model/transaction_modal.dart';
+import '../welcome/screen_splash.dart';
 
 bool isSwitched = false;
 final Uri url = Uri.parse('mailto:althafjeelani159@gmail.com');
@@ -102,7 +102,7 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             ),
             const Spacer(),
             const Center(
-              child: Text('v.1.0.1'),
+              child: Text('v.1.0.2'),
             ),
           ],
         ),

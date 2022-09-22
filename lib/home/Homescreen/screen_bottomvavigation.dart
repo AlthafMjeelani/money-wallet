@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/Screens/Homescreen/screen_home.dart';
-import 'package:moneywallet/Screens/category/screen_category.dart';
-import 'package:moneywallet/Screens/settings/screen_settings.dart';
-import 'package:moneywallet/Screens/statistics/screen_satistics.dart';
 import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/home/Homescreen/screen_home.dart';
 
 import '../../db/functions/category/category_db.dart';
+import '../category/view/screen_category.dart';
+import '../settings/screen_settings.dart';
+import '../statistics/screen_satistics.dart';
 
 class ScreenBottomNavbar extends StatefulWidget {
   const ScreenBottomNavbar({Key? key}) : super(key: key);
@@ -37,9 +37,11 @@ class _ScreenBottomNavbarState extends State<ScreenBottomNavbar> {
     return WillPopScope(
       onWillPop: () async {
         if (currentPageIndex != 0) {
-          setState(() {
-            currentPageIndex = 0;
-          });
+          setState(
+            () {
+              currentPageIndex = 0;
+            },
+          );
           return false;
         }
         return true;
