@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:moneywallet/widget/screen_delete_items.dart';
-import 'package:moneywallet/db/functions/category/category_db.dart';
+import 'package:moneywallet/DB/functions/category/category_db.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../statistics/screen_nodatafound.dart';
 import '../model/category_modal.dart';
 
-class IncomeCategoryList extends StatefulWidget {
+class IncomeCategoryList extends StatelessWidget {
   const IncomeCategoryList({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<IncomeCategoryList> createState() => _IncomeCategoryListState();
-}
-
-class _IncomeCategoryListState extends State<IncomeCategoryList> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(

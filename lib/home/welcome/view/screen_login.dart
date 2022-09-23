@@ -2,18 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:moneywallet/home/welcome/controller/provider/LoginProvider/login_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-import '../Homescreen/screen_bottomvavigation.dart';
-
 class ScreenLogin extends StatelessWidget {
-  ScreenLogin({Key? key}) : super(key: key);
-  final TextEditingController nameController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  const ScreenLogin({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final values = Provider.of<LoginProvider>(context, listen: false);
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -50,23 +50,10 @@ class ScreenLogin extends StatelessWidget {
                       ],
                     ),
                     Form(
-                      key: _formKey,
+                      key: values.formKey,
                       child: TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter some text';
-                          } else if (value.startsWith(
-                            RegExp(r'[0-9]'),
-                          )) {
-                            return "name can't start with numbers";
-                          } else if (value.startsWith(
-                            RegExp(r'[ !@#$%^&*(),.?":{}|<>]'),
-                          )) {
-                            return "name can't start with special cheracters";
-                          }
-                          return null;
-                        },
-                        controller: nameController,
+                        validator: (value) => values.checkValidate(value),
+                        controller: values.nameController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -76,14 +63,8 @@ class ScreenLogin extends StatelessWidget {
                     SizedBox(height: 3.h),
                     ElevatedButton(
                       onPressed: () async {
-                        await getName();
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenBottomNavbar(),
-                            ),
-                          );
-                        }
+                        await values.getName();
+                        values.validate(context);
                       },
                       child: const Text(
                         'LETS GET STARTED',
@@ -97,10 +78,5 @@ class ScreenLogin extends StatelessWidget {
         ),
       ),
     ));
-  }
-
-  Future<void> getName() async {
-    final SharedPreferences name = await SharedPreferences.getInstance();
-    name.setString('enterName', nameController.text);
   }
 }

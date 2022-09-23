@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeCardWidget extends StatefulWidget {

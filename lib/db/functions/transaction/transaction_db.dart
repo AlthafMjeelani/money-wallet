@@ -28,7 +28,6 @@ class TransactionDb {
   ValueNotifier<List<TransactionModel>> totelTransactionNotifire =
       ValueNotifier([]);
 
-  @override
   Future<void> addTransaction(TransactionModel value) async {
     final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
@@ -36,14 +35,12 @@ class TransactionDb {
     await refreshUI();
   }
 
-  @override
   Future<List<TransactionModel>> getAllTransaction() async {
     final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     return transactionDB.values.toList();
   }
 
-  @override
   Future<void> deleteTransactoin(String index) async {
     final transactionyDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
@@ -51,7 +48,6 @@ class TransactionDb {
     await refreshUI();
   }
 
-  @override
   Future<void> refreshUI() async {
     final allTransaction = await getAllTransaction();
     allTransaction.sort((first, second) => second.date.compareTo(first.date));
@@ -60,7 +56,6 @@ class TransactionDb {
     transactionListNotifire.notifyListeners();
   }
 
-  @override
   Future<void> addTotalTransaction() async {
     final allTransaction = await getAllTransaction();
     allTransaction.sort((first, second) => second.date.compareTo(first.date));

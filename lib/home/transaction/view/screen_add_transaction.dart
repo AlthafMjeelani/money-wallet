@@ -6,7 +6,7 @@ import 'package:moneywallet/DB/functions/category/category_db.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../home/Homescreen/screen_bottomvavigation.dart';
+import '../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../category/model/category_modal.dart';
 import '../../category/model/category_typemodel.dart';
 import '../../category/view/screen_category.dart';

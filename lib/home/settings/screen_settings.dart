@@ -5,14 +5,14 @@ import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
 import 'package:moneywallet/home/settings/screen_about.dart';
 import 'package:sizer/sizer.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneywallet/db/functions/category/category_db.dart';
-import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/DB/functions/category/category_db.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../category/model/category_modal.dart';
 import '../transaction/model/transaction_modal.dart';
-import '../welcome/screen_splash.dart';
+import '../welcome/view/screen_splash.dart';
 
 bool isSwitched = false;
 final Uri url = Uri.parse('mailto:althafjeelani159@gmail.com');

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/db/functions/category/category_db.dart';
+import 'package:moneywallet/DB/functions/category/category_db.dart';
 
 import '../home/category/model/category_modal.dart';
 

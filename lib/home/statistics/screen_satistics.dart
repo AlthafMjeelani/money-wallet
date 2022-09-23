@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/db/functions/category/category_db.dart';
-import 'package:moneywallet/db/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/DB/functions/category/category_db.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/statistics/screen_expense_statistics.dart';
 import 'package:moneywallet/home/statistics/screen_income_statistics.dart';
 import 'package:moneywallet/home/statistics/screen_nodatafound.dart';

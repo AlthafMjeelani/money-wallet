@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
-import 'package:moneywallet/home/welcome/screen_splash.dart';
+import 'package:moneywallet/home/Homescreen/controller/provider/bottom_navbar_provider.dart';
+import 'package:moneywallet/home/welcome/controller/provider/LoginProvider/login_provider.dart';
+import 'package:moneywallet/home/welcome/controller/provider/spalshProvider/welcome_provider.dart';
+import 'package:moneywallet/home/welcome/view/screen_splash.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 import 'home/category/model/category_modal.dart';
@@ -27,7 +31,22 @@ void main() async {
 
   await NotificationApi.init();
   NotificationApi.notificationDetails();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<WelcomeProvidfer>(
+          create: (_) => WelcomeProvidfer(),
+        ),
+        ChangeNotifierProvider<LoginProvider>(
+          create: (_) => LoginProvider(),
+        ),
+        ChangeNotifierProvider<BottomNavbarProvider>(
+          create: (_) => BottomNavbarProvider(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
