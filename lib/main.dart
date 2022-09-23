@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
 import 'package:moneywallet/home/Homescreen/controller/provider/bottom_navbar_provider.dart';
+import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:moneywallet/home/welcome/controller/provider/LoginProvider/login_provider.dart';
 import 'package:moneywallet/home/welcome/controller/provider/spalshProvider/welcome_provider.dart';
 import 'package:moneywallet/home/welcome/view/screen_splash.dart';
@@ -42,6 +44,12 @@ void main() async {
         ),
         ChangeNotifierProvider<BottomNavbarProvider>(
           create: (_) => BottomNavbarProvider(),
+        ),
+        ChangeNotifierProvider<HomeScreenProvider>(
+          create: (_) => HomeScreenProvider(),
+        ),
+        ChangeNotifierProvider<TransactionDb>(
+          create: (_) => TransactionDb(),
         ),
       ],
       child: const MyApp(),

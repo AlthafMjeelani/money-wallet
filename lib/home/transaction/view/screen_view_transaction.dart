@@ -22,8 +22,7 @@ late String dropdownvalueCategory;
 
 class _ScreenViewTransactionState extends State<ScreenViewTransaction>
     with TickerProviderStateMixin {
-  final List<TransactionModel> allData =
-      TransactionDb.instence.transactionListNotifire.value;
+  final List<TransactionModel> allData = TransactionDb.instence.transactionList;
 
   List<TransactionModel> foundData = [];
   bool search = false;

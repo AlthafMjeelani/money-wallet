@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:moneywallet/home/Homescreen/controller/provider/bottom_navbar_provider.dart';
 import 'package:moneywallet/home/welcome/controller/provider/LoginProvider/login_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -13,6 +14,7 @@ class ScreenLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<BottomNavbarProvider>(context, listen: false).currentPageIndex;
     final values = Provider.of<LoginProvider>(context, listen: false);
     return SafeArea(
         child: Scaffold(

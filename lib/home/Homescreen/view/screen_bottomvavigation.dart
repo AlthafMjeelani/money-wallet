@@ -8,7 +8,9 @@ import 'package:provider/provider.dart';
 import '../../../DB/functions/category/category_db.dart';
 
 class ScreenBottomNavbar extends StatelessWidget {
-  const ScreenBottomNavbar({Key? key,}) : super(key: key);
+  const ScreenBottomNavbar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ScreenBottomNavbar extends StatelessWidget {
             return true;
           },
           child: Scaffold(
-            body: ListOfPage.screens[value.currentPageIndex],
+            body: HomeScreenSupport.screens[value.currentPageIndex],
             bottomNavigationBar: BottomNavigationBar(
               selectedItemColor: const Color.fromARGB(255, 12, 133, 255),
               unselectedItemColor: const Color.fromARGB(255, 0, 0, 0),

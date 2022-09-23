@@ -54,20 +54,17 @@ class _ScreenStatisticsState extends State<ScreenStatistics>
                 child: TabBarView(
                   controller: tabController,
                   children: [
-                    TransactionDb
-                            .instence.incomeTransactionNotifire.value.isNotEmpty
+                    TransactionDb.instence.incomeTransaction.isNotEmpty
                         ? const ScreenIncomeStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',
                           ),
-                    TransactionDb.instence.expenseTransactionNotifire.value
-                            .isNotEmpty
+                    TransactionDb.instence.expenseTransaction.isNotEmpty
                         ? const ScreenExpenseStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',
                           ),
-                    TransactionDb
-                            .instence.transactionListNotifire.value.isNotEmpty
+                    TransactionDb.instence.transactionList.isNotEmpty
                         ? const ScreenOverviewStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',

@@ -15,8 +15,8 @@ class ScreenExpenseStatistics extends StatelessWidget {
       series: <CircularSeries>[
         PieSeries<ChartedData, String>(
           dataLabelSettings: const DataLabelSettings(isVisible: true),
-          dataSource: chartedCategory(
-              TransactionDb.instence.expenseTransactionNotifire.value),
+          dataSource:
+              chartedCategory(TransactionDb.instence.expenseTransaction),
           xValueMapper: (ChartedData data, _) => data.categoryName,
           yValueMapper: (ChartedData data, _) => data.amount,
           explode: true,

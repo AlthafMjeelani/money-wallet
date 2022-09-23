@@ -22,9 +22,9 @@ class _ScreenOverviewStatisticsState extends State<ScreenOverviewStatistics> {
   ];
 
   Map<String, double> statistics = {
-    "Income": TransactionDb.instence.totalIncome.value.toDouble(),
-    "Expense": TransactionDb.instence.totalExpense.value.toDouble(),
-    "Total Balance": TransactionDb.instence.totalBalence.value.toDouble(),
+    "Income": TransactionDb.instence.totalIncome.toDouble(),
+    "Expense": TransactionDb.instence.totalExpense.toDouble(),
+    "Total Balance": TransactionDb.instence.totalBalence.toDouble(),
   };
   @override
   void initState() {

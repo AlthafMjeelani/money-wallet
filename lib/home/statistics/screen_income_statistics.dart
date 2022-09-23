@@ -17,7 +17,7 @@ class ScreenIncomeStatistics extends StatefulWidget {
 
 class _ScreenIncomeStatisticsState extends State<ScreenIncomeStatistics> {
   final List<TransactionModel> values =
-      TransactionDb.instence.incomeTransactionNotifire.value;
+      TransactionDb.instence.incomeTransaction;
   @override
   void initState() {
     dropdownvalueCategory = 'All';
@@ -34,7 +34,8 @@ class _ScreenIncomeStatisticsState extends State<ScreenIncomeStatistics> {
         PieSeries<ChartedData, String>(
           dataLabelSettings: const DataLabelSettings(isVisible: true),
           dataSource: chartedCategory(
-              TransactionDb.instence.incomeTransactionNotifire.value),
+            TransactionDb.instence.incomeTransaction,
+          ),
           xValueMapper: (ChartedData data, _) => data.categoryName,
           yValueMapper: (ChartedData data, _) => data.amount,
           explode: true,

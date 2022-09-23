@@ -15,8 +15,12 @@ import '../model/transaction_modal.dart';
 enum ActionType { addscreen, editscreen }
 
 class ScreenAddTransaction extends StatefulWidget {
-  ScreenAddTransaction({Key? key, this.index, this.modal, this.type})
-      : super(key: key);
+  ScreenAddTransaction({
+    Key? key,
+    this.index,
+    this.modal,
+    this.type,
+  }) : super(key: key);
 
   int? index;
   ActionType? type;
