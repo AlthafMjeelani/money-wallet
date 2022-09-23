@@ -13,6 +13,7 @@ import 'package:sizer/sizer.dart';
 
 import 'home/category/model/category_modal.dart';
 import 'home/category/model/category_typemodel.dart';
+import 'home/transaction/controller/provider/transaction_provider.dart';
 import 'home/transaction/model/transaction_modal.dart';
 
 void main() async {
@@ -50,6 +51,9 @@ void main() async {
         ),
         ChangeNotifierProvider<TransactionDb>(
           create: (_) => TransactionDb(),
+        ),
+        ChangeNotifierProvider<TransactionProvider>(
+          create: (_) => TransactionProvider(),
         ),
       ],
       child: const MyApp(),

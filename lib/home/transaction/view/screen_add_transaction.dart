@@ -4,17 +4,22 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:moneywallet/DB/functions/category/category_db.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
+import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
+import 'package:moneywallet/home/transaction/controller/provider/transaction_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
 import '../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../category/model/category_modal.dart';
 import '../../category/model/category_typemodel.dart';
 import '../../category/view/screen_category.dart';
 import '../model/transaction_modal.dart';
 
-enum ActionType { addscreen, editscreen }
+enum ActionType {
+  addscreen,
+  editscreen,
+}
 
-class ScreenAddTransaction extends StatefulWidget {
+class ScreenAddTransaction extends StatelessWidget {
   ScreenAddTransaction({
     Key? key,
     this.index,
@@ -27,40 +32,22 @@ class ScreenAddTransaction extends StatefulWidget {
   TransactionModel? modal;
 
   @override
-  State<ScreenAddTransaction> createState() => _ScreenAddTransactionState();
-}
-
-TextEditingController dateController = TextEditingController();
-TextEditingController amountController = TextEditingController();
-final _formKeyAlert = GlobalKey<FormState>();
-
-class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
-  CategoryType _selectedCategoryType = CategoryType.income;
-  CategoryModel? _selectedCategoryModel;
-  String? dropdownvalueCategory;
-  DateTime? pickedDate;
-  final _formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    if (widget.type == ActionType.editscreen) {
-      dateController.text = DateFormat('yMMMMd').format(widget.modal!.date);
-      amountController.text = widget.modal!.amount.toString();
-      _selectedCategoryType = widget.modal!.type;
-    } else {
-      CategoryDb.instence.refreshUI();
-      _selectedCategoryType = CategoryType.income;
-      dateController.clear();
-      amountController.clear();
-      TransactionDb.instence.refreshUI();
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final data = Provider.of<TransactionProvider>(context, listen: false);
+    if (type == ActionType.editscreen) {
+      data.dateController.text = DateFormat('yMMMMd').format(modal!.date);
+      data.amountController.text = modal!.amount.toString();
+      data.selectedCategoryType = modal!.type;
+    } else {
+      data.selectedCategoryType = CategoryType.income;
+      data.dateController.clear();
+      data.amountController.clear();
+      TransactionDb.instence.refreshUI();
+      CategoryDb.instence.refreshUI();
+    }
     return Scaffold(
       appBar: AppBar(
-        title: widget.type == ActionType.addscreen
+        title: type == ActionType.addscreen
             ? const Text('ADD TRANSACTION')
             : const Text('EDIT TRANSACTION'),
         centerTitle: true,
@@ -69,7 +56,7 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
         child: Container(
           padding: EdgeInsets.only(top: 1.h, left: 4.w, right: 4.w),
           child: Form(
-            key: _formKeyAlert,
+            key: data.formKeyAlert,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -82,85 +69,86 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 22),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          contentPadding: const EdgeInsets.all(0),
-                          horizontalTitleGap: 0,
-                          title: const Text("Income"),
-                          leading: Radio(
-                              value: CategoryType.income,
-                              groupValue: _selectedCategoryType,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedCategoryType = CategoryType.income;
-                                  dropdownvalueCategory = null;
-                                });
-                              }),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          horizontalTitleGap: 0,
-                          title: const Text("Expense"),
-                          leading: Radio(
-                              value: CategoryType.expense,
-                              groupValue: _selectedCategoryType,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedCategoryType = CategoryType.expense;
-                                  dropdownvalueCategory = null;
-                                });
-                              }),
-                        ),
-                      )
-                    ],
+                  child: Consumer(
+                    builder: (BuildContext context, TransactionProvider value,
+                        Widget? child) {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(0),
+                              horizontalTitleGap: 0,
+                              title: const Text("Income"),
+                              leading: Radio(
+                                value: CategoryType.income,
+                                groupValue: value.selectedCategoryType,
+                                onChanged: (value) => data.incomeRadioButton(),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListTile(
+                              horizontalTitleGap: 0,
+                              title: const Text("Expense"),
+                              leading: Radio(
+                                value: CategoryType.expense,
+                                groupValue: value.selectedCategoryType,
+                                onChanged: (value) => data.expenseRadioButton(),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    },
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    DropdownButtonFormField<String>(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'select category name';
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.category),
-                      ),
-                      hint: const Text('select cetegory'),
-                      value: dropdownvalueCategory,
-                      onChanged: (newValue) {
-                        setState(() {
-                          dropdownvalueCategory = newValue;
-                        });
-                      },
-                      items: (_selectedCategoryType == CategoryType.income
-                              ? CategoryDb().incomeCategoryList
-                              : CategoryDb().expenseCategoryList)
-                          .value
-                          .map((e) {
-                        return DropdownMenuItem(
-                            value: e.id,
-                            child: Text(e.name),
-                            onTap: () {
-                              _selectedCategoryModel = e;
-                            });
-                      }).toList(),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {
-                        addcategory(context);
-                      },
-                      label: const Text('New Category'),
-                      icon: const Icon(Icons.add),
-                    )
-                  ],
+                Consumer(
+                  builder: (BuildContext context, TransactionProvider values,
+                      Widget? child) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        DropdownButtonFormField<String>(
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'select category name';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            icon: Icon(Icons.category),
+                          ),
+                          hint: const Text('select cetegory'),
+                          value: values.dropdownvalueCategory,
+                          onChanged: (newValue) {
+                            values.dropDownValues(newValue);
+                          },
+                          items: (values.selectedCategoryType ==
+                                      CategoryType.income
+                                  ? CategoryDb().incomeCategoryList
+                                  : CategoryDb().expenseCategoryList)
+                              .value
+                              .map((e) {
+                            return DropdownMenuItem(
+                                value: e.id,
+                                child: Text(e.name),
+                                onTap: () {
+                                  values.selectedCategoryModel = e;
+                                });
+                          }).toList(),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {
+                            addcategory(context);
+                          },
+                          label: const Text('New Category'),
+                          icon: const Icon(Icons.add),
+                        )
+                      ],
+                    );
+                  },
                 ),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -175,7 +163,7 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                     }
                     return null;
                   },
-                  controller: amountController,
+                  controller: data.amountController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -187,48 +175,42 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                   height: 2.h,
                 ),
                 TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'select date';
-                      }
-                      return null;
-                    },
-                    controller: dateController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "Select Date"),
-                    readOnly: true,
-                    onTap: () async {
-                      pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                      );
-
-                      setState(() {
-                        if (pickedDate != null) {
-                          dateController.text =
-                              DateFormat('yMMMMd').format(pickedDate!);
-                        } else {
-                          dateController.text =
-                              DateFormat('yMMMMd').format(widget.modal!.date);
-                        }
-                      });
-                    }),
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'select date';
+                    }
+                    return null;
+                  },
+                  controller: data.dateController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.calendar_today),
+                      labelText: "Select Date"),
+                  readOnly: true,
+                  onTap: () async {
+                    data.pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now(),
+                    );
+                    // ignore: use_build_context_synchronously
+                    data.pickDate(
+                      context,
+                      modal?.date,
+                    );
+                  },
+                ),
                 SizedBox(
                   height: 4.h,
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      if (_formKeyAlert.currentState!.validate()) {
-                        addTransaction();
-                        setState(() {
-                          amountController.clear();
-                          dateController.clear();
-                        });
+                      if (data.formKeyAlert.currentState!.validate()) {
+                        addTransaction(context);
+                        data.textFeildClear();
+                        data.dropdownvalueCategory = null;
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
                           duration: Duration(seconds: 1),
@@ -258,8 +240,9 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
     );
   }
 
-  Future<void> addTransaction() async {
-    final amount = amountController.text;
+  Future<void> addTransaction(context) async {
+    final data = Provider.of<TransactionProvider>(context, listen: false);
+    final amount = data.amountController.text;
 
     if (amount.isEmpty) {
       return;
@@ -269,25 +252,25 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
     if (parsedAmount == null) {
       return;
     }
-    pickedDate ??= widget.modal!.date;
 
-    if (_selectedCategoryModel == null) {
+    if (data.selectedCategoryModel == null) {
       return;
     }
     final modal = TransactionModel(
       amount: parsedAmount,
-      date: pickedDate!,
-      type: _selectedCategoryType,
-      category: _selectedCategoryModel!,
+      date: data.pickedDate!,
+      type: data.selectedCategoryType,
+      category: data.selectedCategoryModel!,
     );
-    if (widget.type == ActionType.editscreen) {
-      widget.modal!.updateTransaction(modal);
+    if (type == ActionType.editscreen) {
+      modal.updateTransaction(modal);
     } else {
       TransactionDb.instence.addTransaction(modal);
     }
   }
 
   Future<void> addcategory(BuildContext context) async {
+    final data = Provider.of<TransactionProvider>(context, listen: false);
     showDialog(
         context: context,
         builder: (ctx) {
@@ -295,7 +278,7 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
             contentPadding: const EdgeInsets.all(10),
             children: [
               Form(
-                key: _formKey,
+                key: data.formKey,
                 child: TextFormField(
                   maxLength: 12,
                   validator: (value) {
@@ -303,7 +286,7 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                       return 'Please enter category name';
                     }
 
-                    if (_selectedCategoryType == CategoryType.income) {
+                    if (data.selectedCategoryType == CategoryType.income) {
                       final income = CategoryDb
                           .instence.incomeCategoryList.value
                           .map((e) => e.name.trim().toLowerCase())
@@ -313,7 +296,7 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                         return 'Category already exists';
                       }
                     }
-                    if (_selectedCategoryType == CategoryType.expense) {
+                    if (data.selectedCategoryType == CategoryType.expense) {
                       final expense = CategoryDb
                           .instence.expenseCategoryList.value
                           .map((e) => e.name.trim().toLowerCase())
@@ -339,17 +322,17 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.of(ctx).pop();
-                      setState(() {
-                        categoryNameController.clear();
-                      });
+                      Provider.of<HomeScreenProvider>(context, listen: false)
+                          .navigatorPop(context);
+
+                      data.categoryClear();
                     },
                     child: const Text('CANCEL'),
                   ),
                   const Spacer(),
                   TextButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
+                        if (data.formKey.currentState!.validate()) {
                           final categoryName =
                               categoryNameController.text.trim();
                           if (categoryName.isEmpty) {
@@ -360,17 +343,13 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
                                 .millisecondsSinceEpoch
                                 .toString(),
                             name: categoryName,
-                            type: _selectedCategoryType == CategoryType.income
-                                ? CategoryType.income
-                                : CategoryType.expense,
+                            type:
+                                data.selectedCategoryType == CategoryType.income
+                                    ? CategoryType.income
+                                    : CategoryType.expense,
                           );
                           CategoryDb().insertCategory(category);
-                          setState(
-                            () {
-                              categoryNameController.clear();
-                              CategoryDb.instence.refreshUI();
-                            },
-                          );
+                          data.categoryClear();
 
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
