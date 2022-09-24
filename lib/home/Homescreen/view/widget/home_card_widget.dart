@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../../transaction/controller/provider/transaction_provider.dart';
 
 class HomeCardWidget extends StatelessWidget {
   const HomeCardWidget({
@@ -11,8 +12,9 @@ class HomeCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TransactionDb.instence.refreshUI();
-    TransactionDb.instence.addTotalTransaction();
+    Provider.of<TransactionProvider>(context, listen: false)
+        .addTotalTransaction();
+
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
@@ -27,7 +29,8 @@ class HomeCardWidget extends StatelessWidget {
           )),
       height: 25.h,
       child: Consumer(
-        builder: (BuildContext context, TransactionDb value, Widget? child) {
+        builder:
+            (BuildContext context, TransactionProvider value, Widget? child) {
           return Column(
             children: [
               SizedBox(

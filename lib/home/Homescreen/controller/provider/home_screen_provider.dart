@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../DB/functions/transaction/transaction_db.dart';
+import '../../../transaction/controller/provider/transaction_provider.dart';
+import '../../../transaction/model/enum.dart';
 import '../../../transaction/view/screen_add_transaction.dart';
 import '../../../transaction/view/screen_view_transaction.dart';
 
 class HomeScreenProvider with ChangeNotifier {
   String name = '';
+
   Future<void> getName() async {
     final SharedPreferences prefer = await SharedPreferences.getInstance();
     final userName = prefer.getString('enterName');
@@ -27,9 +31,10 @@ class HomeScreenProvider with ChangeNotifier {
     return 'Good Night';
   }
 
-  void refresh() {
+  void refresh(context) {
     TransactionDb.instence.refreshUI();
-    TransactionDb.instence.addTotalTransaction();
+    Provider.of<TransactionProvider>(context, listen: false)
+        .transactionRefresh();
     notifyListeners();
   }
 

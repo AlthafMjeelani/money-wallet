@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+
+import '../transaction/controller/provider/transaction_provider.dart';
 
 // ignore: must_be_immutable
 class ScreenOverviewStatistics extends StatefulWidget {
@@ -21,11 +24,6 @@ class _ScreenOverviewStatisticsState extends State<ScreenOverviewStatistics> {
     const Color.fromRGBO(75, 135, 185, 1),
   ];
 
-  Map<String, double> statistics = {
-    "Income": TransactionDb.instence.totalIncome.toDouble(),
-    "Expense": TransactionDb.instence.totalExpense.toDouble(),
-    "Total Balance": TransactionDb.instence.totalBalence.toDouble(),
-  };
   @override
   void initState() {
     TransactionDb.instence.refreshUI();
@@ -34,6 +32,17 @@ class _ScreenOverviewStatisticsState extends State<ScreenOverviewStatistics> {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, double> statistics = {
+      "Income": Provider.of<TransactionProvider>(context, listen: false)
+          .totalIncome
+          .toDouble(),
+      "Expense": Provider.of<TransactionProvider>(context, listen: false)
+          .totalExpense
+          .toDouble(),
+      "Total Balance": Provider.of<TransactionProvider>(context, listen: false)
+          .totalBalence
+          .toDouble(),
+    };
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

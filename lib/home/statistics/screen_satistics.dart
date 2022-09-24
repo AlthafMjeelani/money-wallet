@@ -7,6 +7,9 @@ import 'package:moneywallet/home/statistics/screen_nodatafound.dart';
 import 'package:moneywallet/home/statistics/screen_overview_statistics.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:moneywallet/widget/tabbar_widget.dart';
+import 'package:provider/provider.dart';
+
+import '../transaction/controller/provider/transaction_provider.dart';
 
 class ScreenStatistics extends StatefulWidget {
   const ScreenStatistics({Key? key}) : super(key: key);
@@ -54,17 +57,23 @@ class _ScreenStatisticsState extends State<ScreenStatistics>
                 child: TabBarView(
                   controller: tabController,
                   children: [
-                    TransactionDb.instence.incomeTransaction.isNotEmpty
+                    Provider.of<TransactionProvider>(context, listen: false)
+                            .incomeTransaction
+                            .isNotEmpty
                         ? const ScreenIncomeStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',
                           ),
-                    TransactionDb.instence.expenseTransaction.isNotEmpty
+                    Provider.of<TransactionProvider>(context, listen: false)
+                            .expenseTransaction
+                            .isNotEmpty
                         ? const ScreenExpenseStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',
                           ),
-                    TransactionDb.instence.transactionList.isNotEmpty
+                    Provider.of<TransactionProvider>(context, listen: false)
+                            .allTransactionList
+                            .isNotEmpty
                         ? const ScreenOverviewStatistics()
                         : const NoDataFound(
                             text: 'No Transactions',

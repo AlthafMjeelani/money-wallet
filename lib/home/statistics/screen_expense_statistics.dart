@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/statistics/sorted_statistics_items.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../transaction/controller/provider/transaction_provider.dart';
 
 class ScreenExpenseStatistics extends StatelessWidget {
   const ScreenExpenseStatistics({
@@ -15,8 +18,9 @@ class ScreenExpenseStatistics extends StatelessWidget {
       series: <CircularSeries>[
         PieSeries<ChartedData, String>(
           dataLabelSettings: const DataLabelSettings(isVisible: true),
-          dataSource:
-              chartedCategory(TransactionDb.instence.expenseTransaction),
+          dataSource: chartedCategory(
+              Provider.of<TransactionProvider>(context, listen: false)
+                  .expenseTransaction),
           xValueMapper: (ChartedData data, _) => data.categoryName,
           yValueMapper: (ChartedData data, _) => data.amount,
           explode: true,

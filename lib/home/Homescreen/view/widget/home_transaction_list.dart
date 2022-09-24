@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../../category/model/category_typemodel.dart';
+import '../../../transaction/controller/provider/transaction_provider.dart';
 import '../../../transaction/model/transaction_modal.dart';
 import '../../controller/provider/home_screen_provider.dart';
 import '../../controller/support/list_of_pages.dart';

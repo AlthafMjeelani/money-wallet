@@ -6,26 +6,16 @@ import 'package:moneywallet/DB/functions/category/category_db.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:moneywallet/home/transaction/controller/provider/transaction_provider.dart';
+import 'package:moneywallet/home/transaction/model/transaction_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import '../../Homescreen/view/screen_bottomvavigation.dart';
-import '../../category/model/category_modal.dart';
 import '../../category/model/category_typemodel.dart';
 import '../../category/view/screen_category.dart';
-import '../model/transaction_modal.dart';
-
-enum ActionType {
-  addscreen,
-  editscreen,
-}
+import '../model/enum.dart';
 
 class ScreenAddTransaction extends StatelessWidget {
-  ScreenAddTransaction({
-    Key? key,
-    this.index,
-    this.modal,
-    this.type,
-  }) : super(key: key);
+  ScreenAddTransaction({Key? key, this.index, this.type, this.modal})
+      : super(key: key);
 
   int? index;
   ActionType? type;
@@ -47,7 +37,7 @@ class ScreenAddTransaction extends StatelessWidget {
     }
     return Scaffold(
       appBar: AppBar(
-        title: type == ActionType.addscreen
+        title: data.type == ActionType.addscreen
             ? const Text('ADD TRANSACTION')
             : const Text('EDIT TRANSACTION'),
         centerTitle: true,
@@ -110,12 +100,8 @@ class ScreenAddTransaction extends StatelessWidget {
                       children: [
                         DropdownButtonFormField<String>(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'select category name';
-                            }
-                            return null;
-                          },
+                          validator: (value) =>
+                              data.validator(value, 'select cetegory'),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             icon: Icon(Icons.category),
@@ -140,8 +126,8 @@ class ScreenAddTransaction extends StatelessWidget {
                           }).toList(),
                         ),
                         TextButton.icon(
-                          onPressed: () {
-                            addcategory(context);
+                          onPressed: () async {
+                            await addcategory(context);
                           },
                           label: const Text('New Category'),
                           icon: const Icon(Icons.add),
@@ -157,12 +143,7 @@ class ScreenAddTransaction extends StatelessWidget {
                       RegExp(r'^\d+(?:-\d+)?$'),
                     )
                   ],
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'enter amount';
-                    }
-                    return null;
-                  },
+                  validator: (value) => data.validator(value, 'Enter Emount'),
                   controller: data.amountController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
@@ -176,12 +157,7 @@ class ScreenAddTransaction extends StatelessWidget {
                 ),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'select date';
-                    }
-                    return null;
-                  },
+                  validator: (value) => data.validator(value, 'Select Date'),
                   controller: data.dateController,
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(),
@@ -198,7 +174,7 @@ class ScreenAddTransaction extends StatelessWidget {
                     // ignore: use_build_context_synchronously
                     data.pickDate(
                       context,
-                      modal?.date,
+                      data.modal?.date,
                     );
                   },
                 ),
@@ -206,32 +182,12 @@ class ScreenAddTransaction extends StatelessWidget {
                   height: 4.h,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      if (data.formKeyAlert.currentState!.validate()) {
-                        addTransaction(context);
-                        data.textFeildClear();
-                        data.dropdownvalueCategory = null;
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          duration: Duration(seconds: 1),
-                          elevation: 20,
-                          content: Text(
-                            'Transaction successfully added',
-                          ),
-                          backgroundColor: Colors.green,
-                        ));
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ScreenBottomNavbar(),
-                            ),
-                            (route) => false);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(double.infinity, 40),
-                    ),
-                    child: const Text('ADD'))
+                  onPressed: () => data.transactionSubmit(context),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 40),
+                  ),
+                  child: const Text('ADD'),
+                )
               ],
             ),
           ),
@@ -240,134 +196,49 @@ class ScreenAddTransaction extends StatelessWidget {
     );
   }
 
-  Future<void> addTransaction(context) async {
-    final data = Provider.of<TransactionProvider>(context, listen: false);
-    final amount = data.amountController.text;
-
-    if (amount.isEmpty) {
-      return;
-    }
-
-    final parsedAmount = double.tryParse(amount);
-    if (parsedAmount == null) {
-      return;
-    }
-
-    if (data.selectedCategoryModel == null) {
-      return;
-    }
-    final modal = TransactionModel(
-      amount: parsedAmount,
-      date: data.pickedDate!,
-      type: data.selectedCategoryType,
-      category: data.selectedCategoryModel!,
-    );
-    if (type == ActionType.editscreen) {
-      modal.updateTransaction(modal);
-    } else {
-      TransactionDb.instence.addTransaction(modal);
-    }
-  }
-
   Future<void> addcategory(BuildContext context) async {
     final data = Provider.of<TransactionProvider>(context, listen: false);
     showDialog(
-        context: context,
-        builder: (ctx) {
-          return SimpleDialog(
-            contentPadding: const EdgeInsets.all(10),
-            children: [
-              Form(
-                key: data.formKey,
-                child: TextFormField(
-                  maxLength: 12,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter category name';
-                    }
-
-                    if (data.selectedCategoryType == CategoryType.income) {
-                      final income = CategoryDb
-                          .instence.incomeCategoryList.value
-                          .map((e) => e.name.trim().toLowerCase())
-                          .toList();
-                      if (income.contains(
-                          categoryNameController.text.trim().toLowerCase())) {
-                        return 'Category already exists';
-                      }
-                    }
-                    if (data.selectedCategoryType == CategoryType.expense) {
-                      final expense = CategoryDb
-                          .instence.expenseCategoryList.value
-                          .map((e) => e.name.trim().toLowerCase())
-                          .toList();
-                      if (expense.contains(
-                          categoryNameController.text.trim().toLowerCase())) {
-                        return 'Category already exists';
-                      }
-                    }
-                    return null;
-                  },
-                  controller: categoryNameController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.edit),
-                    labelText: 'Enter category name',
-                  ),
+      context: context,
+      builder: (ctx) {
+        return SimpleDialog(
+          contentPadding: const EdgeInsets.all(10),
+          children: [
+            Form(
+              key: data.formKey,
+              child: TextFormField(
+                maxLength: 12,
+                validator: (value) => data.addCategory(value),
+                controller: categoryNameController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.edit),
+                  labelText: 'Enter category name',
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Provider.of<HomeScreenProvider>(context, listen: false)
-                          .navigatorPop(context);
-
-                      data.categoryClear();
-                    },
-                    child: const Text('CANCEL'),
-                  ),
-                  const Spacer(),
-                  TextButton(
-                      onPressed: () {
-                        if (data.formKey.currentState!.validate()) {
-                          final categoryName =
-                              categoryNameController.text.trim();
-                          if (categoryName.isEmpty) {
-                            return;
-                          }
-                          final category = CategoryModel(
-                            id: DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString(),
-                            name: categoryName,
-                            type:
-                                data.selectedCategoryType == CategoryType.income
-                                    ? CategoryType.income
-                                    : CategoryType.expense,
-                          );
-                          CategoryDb().insertCategory(category);
-                          data.categoryClear();
-
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            duration: Duration(seconds: 1),
-                            elevation: 20,
-                            content: Text(
-                              'successfully added to categorylist',
-                            ),
-                            backgroundColor: Colors.green,
-                          ));
-                          Navigator.of(ctx).pop();
-                        }
-                      },
-                      child: const Text('ADD')),
-                ],
-              )
-            ],
-          );
-        });
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Provider.of<HomeScreenProvider>(context, listen: false)
+                        .navigatorPop(context);
+                    data.categoryClear();
+                  },
+                  child: const Text('CANCEL'),
+                ),
+                const Spacer(),
+                TextButton(
+                  onPressed: () => data.submitCategory(context),
+                  child: const Text('ADD'),
+                ),
+              ],
+            )
+          ],
+        );
+      },
+    );
   }
 }

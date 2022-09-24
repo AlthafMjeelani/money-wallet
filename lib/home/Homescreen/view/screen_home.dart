@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moneywallet/DB/functions/category/category_db.dart';
-import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:moneywallet/home/Homescreen/view/widget/home_card_widget.dart';
 import 'package:moneywallet/home/Homescreen/view/widget/home_transaction_list.dart';
+import 'package:moneywallet/home/transaction/controller/provider/transaction_provider.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -13,10 +13,12 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<TransactionProvider>(context, listen: false)
+        .transactionRefresh();
     final data = Provider.of<HomeScreenProvider>(context, listen: false);
     data.getName();
     CategoryDb.instence.refreshUI();
-    TransactionDb.instence.refreshUI();
+
     return SafeArea(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -77,10 +79,10 @@ class ScreenHome extends StatelessWidget {
               Expanded(
                 child: ScrollConfiguration(
                   behavior: MyBehavior(),
-                  child: Consumer<TransactionDb>(
-                    builder: (BuildContext context, TransactionDb newList,
+                  child: Consumer<TransactionProvider>(
+                    builder: (BuildContext context, TransactionProvider newList,
                         Widget? _) {
-                      if (newList.transactionList.isEmpty) {
+                      if (newList.allTransactionList.isEmpty) {
                         return Center(
                           child: Container(
                             decoration: const BoxDecoration(
@@ -109,7 +111,7 @@ class ScreenHome extends StatelessWidget {
                           ),
                           child: ListView.builder(
                             itemBuilder: (context, index) {
-                              final value = newList.transactionList[index];
+                              final value = newList.allTransactionList[index];
                               return Center(
                                 child: HomeTransactionList(
                                   value: value,
@@ -117,9 +119,9 @@ class ScreenHome extends StatelessWidget {
                                 ),
                               );
                             },
-                            itemCount: newList.transactionList.length >= 4
+                            itemCount: newList.allTransactionList.length >= 4
                                 ? 4
-                                : newList.transactionList.length,
+                                : newList.allTransactionList.length,
                           ),
                         );
                       }
