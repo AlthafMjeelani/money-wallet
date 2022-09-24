@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneywallet/home/transaction/model/transaction_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../DB/functions/transaction/transaction_db.dart';
@@ -38,13 +39,14 @@ class HomeScreenProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void naviagtorPushEdit(context, index, value) {
+  void naviagtorPushEdit(context, index, TransactionModel value, String id) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => ScreenAddTransaction(
           index: index,
           type: ActionType.editscreen,
           modal: value,
+          id: id,
         ),
       ),
     );
@@ -54,10 +56,12 @@ class HomeScreenProvider with ChangeNotifier {
     Navigator.of(context).pop();
   }
 
-  void naviagtorPushView(context) {
+  void naviagtorPushView(
+    context,
+  ) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const ScreenViewTransaction(),
+        builder: (context) => ScreenViewTransaction(),
       ),
     );
   }

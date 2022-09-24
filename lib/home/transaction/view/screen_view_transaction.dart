@@ -5,10 +5,13 @@ import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:moneywallet/home/transaction/controller/provider/transaction_provider.dart';
 import 'package:moneywallet/home/transaction/controller/provider/view_transaction_provider.dart';
+import 'package:moneywallet/home/transaction/view/screen_add_transaction.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../category/model/category_typemodel.dart';
+import '../model/enum.dart';
+import '../model/transaction_modal.dart';
 
 class ScreenViewTransaction extends StatelessWidget {
   const ScreenViewTransaction({
@@ -208,21 +211,38 @@ class ScreenViewTransaction extends StatelessWidget {
                                                           .spaceEvenly,
                                                   children: [
                                                     IconButton(
-                                                        onPressed: () {
-                                                          Provider.of<HomeScreenProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .navigatorPop(
-                                                                  context);
-                                                          value
-                                                              .naviagtioViewToEdit(
-                                                            context,
-                                                            index,
-                                                            value,
-                                                          );
-                                                        },
-                                                        icon: const Icon(
-                                                            Icons.edit)),
+                                                      onPressed: () {
+                                                        Provider.of<HomeScreenProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .navigatorPop(
+                                                                context);
+                                                        // Provider.of<HomeScreenProvider>(
+                                                        //         context,
+                                                        //         listen: false)
+                                                        //     .naviagtorPushEdit(
+                                                        //         context,
+                                                        //         index,
+                                                        //         values!);
+
+                                                        Navigator.of(context)
+                                                            .push(
+                                                          MaterialPageRoute(
+                                                            builder: (ctx) =>
+                                                                ScreenAddTransaction(
+                                                              index: index,
+                                                              type: ActionType
+                                                                  .editscreen,
+                                                              modal: data.model,
+                                                              id: data
+                                                                  .model!.id,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.edit),
+                                                    ),
                                                     Consumer(
                                                       builder: (BuildContext
                                                               context,

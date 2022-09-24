@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +15,7 @@ import '../../../category/model/category_modal.dart';
 import '../../../category/model/category_typemodel.dart';
 import '../../../category/view/screen_category.dart';
 import '../../model/transaction_modal.dart';
+import '../../view/screen_add_transaction.dart';
 
 class TransactionProvider with ChangeNotifier {
   num totalIncome = 0;
@@ -52,12 +55,18 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void pickDate(context, date) {
-    if (pickedDate != null) {
-      dateController.text = DateFormat('yMMMMd').format(pickedDate!);
-    } else {
-      dateController.text = DateFormat('yMMMMd').format(date);
+  void pickDate(context) async {
+    pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+        useRootNavigator: false);
+    if (pickedDate == null) {
+      return;
     }
+    dateController.text = DateFormat('yMMMMd').format(pickedDate!);
+
     notifyListeners();
   }
 
@@ -90,14 +99,14 @@ class TransactionProvider with ChangeNotifier {
     Future.forEach(
       allTransaction,
       (TransactionModel data) {
-        totalBalence = totalBalence + data.amount;
+        totalBalence = totalBalence + data.amount.toDouble();
 
         if (data.type == CategoryType.income) {
           incomeTransaction.add(data);
-          totalIncome = totalIncome + data.amount;
+          totalIncome = totalIncome + data.amount.toDouble();
         } else if (data.type == CategoryType.expense) {
           expenseTransaction.add(data);
-          totalExpense = totalExpense + data.amount;
+          totalExpense = totalExpense + data.amount.toDouble();
         }
       },
     );
@@ -127,6 +136,16 @@ class TransactionProvider with ChangeNotifier {
       }
     }
     return null;
+  }
+
+  Future<void> addTransaction(TransactionModel transactionModal) async {
+    await TransactionDb.instence.addTransaction(transactionModal);
+  }
+
+  Future<void> updateTransaction(TransactionModel value, String id) async {
+    await TransactionDb.instence.updateList(id, value);
+    await transactionRefresh();
+    notifyListeners();
   }
 
   void submitCategory(context) {
@@ -159,61 +178,15 @@ class TransactionProvider with ChangeNotifier {
     return null;
   }
 
-  void transactionSubmit(context) {
-    if (formKeyAlert.currentState!.validate()) {
-      final amount = amountController.text;
-
-      if (amount.isEmpty) {
-        return;
-      }
-
-      final parsedAmount = double.tryParse(amount);
-      if (parsedAmount == null) {
-        return;
-      }
-
-      pickedDate ??= modal!.date;
-      if (selectedCategoryModel == null) {
-        return;
-      }
-      TransactionModel dbModel = TransactionModel(
-        amount: parsedAmount,
-        date: pickedDate!,
-        type: selectedCategoryType,
-        category: selectedCategoryModel!,
-        id: type == ActionType.addscreen
-            ? DateTime.now().millisecondsSinceEpoch.toString()
-            : modal!.id,
-      );
-      if (type == ActionType.editscreen) {
-        updateTransaction(dbModel);
-      } else {
-        addTransaction(dbModel);
-      }
-      textFeildClear();
-      dropdownvalueCategory = null;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 1),
-        elevation: 20,
-        content: Text(
-          'Transaction successfully added',
+  void naviagtioViewToEdit(context, index, value) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => ScreenAddTransaction(
+          index: index,
+          type: ActionType.editscreen,
+          modal: value,
         ),
-        backgroundColor: Colors.green,
-      ));
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ScreenBottomNavbar(),
-          ),
-          (route) => false);
-    }
-  }
-
-  Future<void> addTransaction(TransactionModel transactionModal) async {
-    await TransactionDb.instence.addTransaction(transactionModal);
-  }
-
-  Future<void> updateTransaction(TransactionModel value) async {
-    await TransactionDb.instence.updateList(value);
+      ),
+    );
   }
 }

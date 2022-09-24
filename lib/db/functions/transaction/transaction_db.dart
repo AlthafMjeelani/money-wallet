@@ -31,10 +31,10 @@ class TransactionDb {
     await refreshUI();
   }
 
-  Future<void> updateList(TransactionModel value) async {
+  Future<void> updateList(String id, TransactionModel value) async {
     final transactionDB =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await transactionDB.put(value.id, value);
+    await transactionDB.put(id, value);
     await refreshUI();
   }
 

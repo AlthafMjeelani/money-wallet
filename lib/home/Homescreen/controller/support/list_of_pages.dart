@@ -35,7 +35,7 @@ class HomeScreenSupport {
             ),
             TextButton(
               onPressed: () {
-                TransactionDb.instence.deleteTransactoin(modal.id!);
+                TransactionDb.instence.deleteTransactoin(modal.id);
                 SnackBarWidget()
                     .show(context, 'Transaction successfully deleted');
                 Navigator.pop(context);

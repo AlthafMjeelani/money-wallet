@@ -43,7 +43,12 @@ class HomeTransactionList extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             data.navigatorPop(context);
-                            data.naviagtorPushEdit(context, index, value);
+                            data.naviagtorPushEdit(
+                              context,
+                              index,
+                              value,
+                              value.id,
+                            );
                           },
                           icon: const Icon(Icons.edit),
                         ),

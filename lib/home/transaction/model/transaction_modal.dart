@@ -5,7 +5,7 @@ import '../../category/model/category_typemodel.dart';
 part 'transaction_modal.g.dart';
 
 @HiveType(typeId: 3)
-class TransactionModel {
+class TransactionModel extends HiveObject {
   @HiveField(0)
   final double amount;
   @HiveField(1)
@@ -24,12 +24,4 @@ class TransactionModel {
     required this.category,
     required this.id,
   });
-
-  // updateTransaction(TransactionModel update) {
-  //   amount = update.amount;
-  //   date = update.date;
-  //   type = update.type;
-  //   category = update.category;
-  //   save();
-  // }
 }

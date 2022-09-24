@@ -9,15 +9,22 @@ import 'package:moneywallet/home/transaction/controller/provider/transaction_pro
 import 'package:moneywallet/home/transaction/model/transaction_modal.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
+import '../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../category/model/category_typemodel.dart';
 import '../../category/view/screen_category.dart';
 import '../model/enum.dart';
 
 class ScreenAddTransaction extends StatelessWidget {
-  ScreenAddTransaction({Key? key, this.index, this.type, this.modal})
-      : super(key: key);
+  ScreenAddTransaction({
+    Key? key,
+    this.index,
+    this.type,
+    this.modal,
+    this.id,
+  }) : super(key: key);
 
   int? index;
+  String? id;
   ActionType? type;
   TransactionModel? modal;
 
@@ -156,33 +163,22 @@ class ScreenAddTransaction extends StatelessWidget {
                   height: 2.h,
                 ),
                 TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) => data.validator(value, 'Select Date'),
-                  controller: data.dateController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      icon: Icon(Icons.calendar_today),
-                      labelText: "Select Date"),
-                  readOnly: true,
-                  onTap: () async {
-                    data.pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
-                    );
-                    // ignore: use_build_context_synchronously
-                    data.pickDate(
-                      context,
-                      data.modal?.date,
-                    );
-                  },
-                ),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => data.validator(value, 'Select Date'),
+                    controller: data.dateController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        icon: Icon(Icons.calendar_today),
+                        labelText: "Select Date"),
+                    readOnly: true,
+                    onTap: () async => data.pickDate(
+                          context,
+                        )),
                 SizedBox(
                   height: 4.h,
                 ),
                 ElevatedButton(
-                  onPressed: () => data.transactionSubmit(context),
+                  onPressed: () => transactionSubmit(context),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 40),
                   ),
@@ -240,5 +236,60 @@ class ScreenAddTransaction extends StatelessWidget {
         );
       },
     );
+  }
+
+  void transactionSubmit(context) {
+    final data = Provider.of<TransactionProvider>(context, listen: false);
+    if (data.formKeyAlert.currentState!.validate()) {
+      final amount = data.amountController.text;
+
+      if (amount.isEmpty) {
+        return;
+      }
+
+      final parsedAmount = double.tryParse(amount);
+      if (parsedAmount == null) {
+        return;
+      }
+      data.pickedDate ??= modal?.date;
+      if (data.selectedCategoryModel == null) {
+        return;
+      }
+
+      TransactionModel dbModel = TransactionModel(
+        amount: parsedAmount,
+        date: data.pickedDate!,
+        type: data.selectedCategoryType,
+        category: data.selectedCategoryModel!,
+        id: type == ActionType.editscreen
+            ? modal!.id
+            : DateTime.now().millisecondsSinceEpoch.toString(),
+      );
+
+      if (type == ActionType.editscreen) {
+        data.updateTransaction(
+          dbModel,
+          modal!.id.toString(),
+        );
+      } else {
+        data.addTransaction(dbModel);
+      }
+      data.textFeildClear();
+      data.dropdownvalueCategory = null;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        duration: Duration(seconds: 1),
+        elevation: 20,
+        content: Text(
+          'Transaction successfully added',
+        ),
+        backgroundColor: Colors.green,
+      ));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ScreenBottomNavbar(),
+          ),
+          (route) => false);
+    }
   }
 }

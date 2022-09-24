@@ -13,6 +13,7 @@ class ViewTransactionProvider with ChangeNotifier {
   String dropdownvalueCategory = 'All';
   String dropdownvalueDay = 'All';
   bool search = false;
+  TransactionModel? model;
 
   List<TransactionModel> foundData = [];
   checkFilter() {
@@ -170,17 +171,7 @@ class ViewTransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void naviagtioViewToEdit(context, index, value) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => ScreenAddTransaction(
-          index: index,
-          type: ActionType.editscreen,
-          modal: value,
-        ),
-      ),
-    );
-  }
+ 
 
   Future<void> deleteItem(TransactionModel modal, BuildContext context) async {
     showDialog(
@@ -199,7 +190,7 @@ class ViewTransactionProvider with ChangeNotifier {
             TextButton(
               onPressed: () {
                 TransactionDb.instence
-                    .deleteTransactoin(modal.id!)
+                    .deleteTransactoin(modal.id)
                     .whenComplete(() => checkFilter());
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) {
