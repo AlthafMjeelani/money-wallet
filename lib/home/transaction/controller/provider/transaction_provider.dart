@@ -35,6 +35,7 @@ class TransactionProvider with ChangeNotifier {
   String? dropdownvalueCategory;
   ActionType? type;
   TransactionModel? modal;
+  String? id;
 
   void incomeRadioButton() {
     selectedCategoryType = CategoryType.income;
@@ -177,6 +178,59 @@ class TransactionProvider with ChangeNotifier {
     }
     return null;
   }
+
+  // void transactionSubmit(context) {
+  //   final data = Provider.of<TransactionProvider>(context, listen: false);
+  //   if (data.formKeyAlert.currentState!.validate()) {
+  //     final amount = data.amountController.text;
+
+  //     if (amount.isEmpty) {
+  //       return;
+  //     }
+
+  //     final parsedAmount = double.tryParse(amount);
+  //     if (parsedAmount == null) {
+  //       return;
+  //     }
+  //     data.pickedDate ??= modal?.date;
+  //     if (data.selectedCategoryModel == null) {
+  //       return;
+  //     }
+
+  //     TransactionModel dbModel = TransactionModel(
+  //       amount: parsedAmount,
+  //       date: pickedDate!,
+  //       type: selectedCategoryType,
+  //       category: selectedCategoryModel!,
+  //       id: type == ActionType.editscreen
+  //           ? modal!.id
+  //           : DateTime.now().millisecondsSinceEpoch.toString(),
+  //     );
+
+  //     if (type == ActionType.editscreen) {
+  //       updateTransaction(dbModel, modal!.id.toString());
+  //     } else {
+  //       addTransaction(dbModel);
+  //     }
+  //     textFeildClear();
+  //     dropdownvalueCategory = null;
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //       duration: Duration(seconds: 1),
+  //       elevation: 20,
+  //       content: Text(
+  //         'Transaction successfully added',
+  //       ),
+  //       backgroundColor: Colors.green,
+  //     ));
+  //     Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const ScreenBottomNavbar(),
+  //         ),
+  //         (route) => false);
+  //   }
+  //   notifyListeners();
+  // }
 
   void naviagtioViewToEdit(context, index, value) {
     Navigator.of(context).push(

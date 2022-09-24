@@ -15,7 +15,7 @@ class TransactionModel extends HiveObject {
   @HiveField(3)
   final CategoryModel category;
   @HiveField(4)
-  late final String id;
+  final String id;
 
   TransactionModel({
     required this.amount,

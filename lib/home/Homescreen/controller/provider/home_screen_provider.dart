@@ -10,7 +10,7 @@ import '../../../transaction/view/screen_view_transaction.dart';
 
 class HomeScreenProvider with ChangeNotifier {
   String name = '';
-
+  TransactionModel? model;
   Future<void> getName() async {
     final SharedPreferences prefer = await SharedPreferences.getInstance();
     final userName = prefer.getString('enterName');

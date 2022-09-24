@@ -11,13 +11,11 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../category/model/category_typemodel.dart';
 import '../model/enum.dart';
-import '../model/transaction_modal.dart';
 
 class ScreenViewTransaction extends StatelessWidget {
   const ScreenViewTransaction({
     Key? key,
   }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<ViewTransactionProvider>(context, listen: false);
@@ -212,18 +210,14 @@ class ScreenViewTransaction extends StatelessWidget {
                                                   children: [
                                                     IconButton(
                                                       onPressed: () {
+                                                        final value = dbdata
+                                                                .allTransactionList[
+                                                            index];
                                                         Provider.of<HomeScreenProvider>(
                                                                 context,
                                                                 listen: false)
                                                             .navigatorPop(
                                                                 context);
-                                                        // Provider.of<HomeScreenProvider>(
-                                                        //         context,
-                                                        //         listen: false)
-                                                        //     .naviagtorPushEdit(
-                                                        //         context,
-                                                        //         index,
-                                                        //         values!);
 
                                                         Navigator.of(context)
                                                             .push(
@@ -233,9 +227,9 @@ class ScreenViewTransaction extends StatelessWidget {
                                                               index: index,
                                                               type: ActionType
                                                                   .editscreen,
-                                                              modal: data.model,
+                                                              modal: value,
                                                               id: data
-                                                                  .model!.id,
+                                                                  .model?.id,
                                                             ),
                                                           ),
                                                         );
