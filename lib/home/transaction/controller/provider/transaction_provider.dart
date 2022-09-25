@@ -11,6 +11,7 @@ import '../../../../DB/functions/category/category_db.dart';
 import '../../../../widget/snackbar_widget.dart';
 import '../../../Homescreen/controller/provider/home_screen_provider.dart';
 import '../../../Homescreen/view/screen_bottomvavigation.dart';
+import '../../../category/controller/provider/category_provider.dart';
 import '../../../category/model/category_modal.dart';
 import '../../../category/model/category_typemodel.dart';
 import '../../../category/view/screen_category.dart';
@@ -77,8 +78,10 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void categoryClear() {
-    categoryNameController.clear();
+  void categoryClear(context) {
+    Provider.of<CategoryProvider>(context, listen: false)
+        .categoryNameController
+        .clear();
     CategoryDb.instence.refreshUI();
     notifyListeners();
   }
@@ -115,24 +118,34 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String? addCategory(value) {
+  String? addCategory(value, context) {
     if (value == null || value.isEmpty) {
       return 'Please enter category name';
     }
 
     if (selectedCategoryType == CategoryType.income) {
-      final income = CategoryDb.instence.incomeCategoryList.value
+      final income = Provider.of<CategoryProvider>(context, listen: false)
+          .incomeCategoryList
           .map((e) => e.name.trim().toLowerCase())
           .toList();
-      if (income.contains(categoryNameController.text.trim().toLowerCase())) {
+      if (income.contains(Provider.of<CategoryProvider>(context, listen: false)
+          .categoryNameController
+          .text
+          .trim()
+          .toLowerCase())) {
         return 'Category already exists';
       }
     }
     if (selectedCategoryType == CategoryType.expense) {
-      final expense = CategoryDb.instence.expenseCategoryList.value
+      final expense = Provider.of<CategoryProvider>(context, listen: false)
+          .expenseCategoryList
           .map((e) => e.name.trim().toLowerCase())
           .toList();
-      if (expense.contains(categoryNameController.text.trim().toLowerCase())) {
+      if (expense.contains(Provider.of<CategoryProvider>(context, listen: false)
+          .categoryNameController
+          .text
+          .trim()
+          .toLowerCase())) {
         return 'Category already exists';
       }
     }
@@ -151,7 +164,10 @@ class TransactionProvider with ChangeNotifier {
 
   void submitCategory(context) {
     if (formKey.currentState!.validate()) {
-      final categoryName = categoryNameController.text.trim();
+      final categoryName = Provider.of<CategoryProvider>(context, listen: false)
+          .categoryNameController
+          .text
+          .trim();
       if (categoryName.isEmpty) {
         return;
       }
@@ -163,9 +179,10 @@ class TransactionProvider with ChangeNotifier {
             : CategoryType.expense,
       );
       CategoryDb().insertCategory(category);
-      categoryClear();
+      categoryClear(context);
       Provider.of<HomeScreenProvider>(context, listen: false)
           .navigatorPop(context);
+      Provider.of<CategoryProvider>(context, listen: false).refreshUI();
 
       SnackBarWidget().show(context, 'successfully added to categorylist');
     }
@@ -178,6 +195,18 @@ class TransactionProvider with ChangeNotifier {
     }
     return null;
   }
+
+  //  void naviagtioViewToEdit(context, index, value) {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (ctx) => ScreenAddTransaction(
+  //         index: index,
+  //         type: ActionType.editscreen,
+  //         modal: value,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // void transactionSubmit(context) {
   //   final data = Provider.of<TransactionProvider>(context, listen: false);
@@ -232,15 +261,4 @@ class TransactionProvider with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  void naviagtioViewToEdit(context, index, value) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => ScreenAddTransaction(
-          index: index,
-          type: ActionType.editscreen,
-          modal: value,
-        ),
-      ),
-    );
-  }
 }

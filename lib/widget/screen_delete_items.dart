@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/DB/functions/category/category_db.dart';
+import 'package:moneywallet/home/category/controller/provider/category_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../home/category/model/category_modal.dart';
 
 class DeleteCategory {
   Future<void> deleteItem(
-      int index, CategoryModel modal, BuildContext context) async {
+      index, CategoryModel modal, BuildContext context) async {
     showDialog(
       context: context,
       builder: (ctx) {
@@ -20,7 +21,8 @@ class DeleteCategory {
             ),
             TextButton(
               onPressed: () async {
-                CategoryDb.instence.deleteCategory(modal.id);
+                Provider.of<CategoryProvider>(context, listen: false)
+                    .deleteCategory(index.toString());
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   duration: Duration(seconds: 1),
                   elevation: 20,
@@ -29,6 +31,8 @@ class DeleteCategory {
                   ),
                   backgroundColor: Colors.green,
                 ));
+                Provider.of<CategoryProvider>(context, listen: false)
+                    .refreshUI();
 
                 Navigator.of(context).pop();
               },

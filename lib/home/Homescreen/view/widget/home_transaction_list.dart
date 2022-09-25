@@ -21,6 +21,10 @@ class HomeTransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TransactionProvider>(context, listen: false)
+          .transactionRefresh();
+    });
     final data = Provider.of<HomeScreenProvider>(context, listen: false);
     return Column(
       children: [

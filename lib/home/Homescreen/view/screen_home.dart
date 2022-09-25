@@ -13,8 +13,10 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<TransactionProvider>(context, listen: false)
-        .transactionRefresh();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TransactionProvider>(context, listen: false)
+          .transactionRefresh();
+    });
     final data = Provider.of<HomeScreenProvider>(context, listen: false);
     data.getName();
     CategoryDb.instence.refreshUI();

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:moneywallet/DB/functions/category/category_db.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
+import 'package:moneywallet/home/category/controller/provider/category_provider.dart';
 import 'package:moneywallet/home/transaction/controller/provider/transaction_provider.dart';
 import 'package:moneywallet/home/transaction/model/transaction_modal.dart';
 import 'package:provider/provider.dart';
@@ -120,9 +121,12 @@ class ScreenAddTransaction extends StatelessWidget {
                           },
                           items: (values.selectedCategoryType ==
                                       CategoryType.income
-                                  ? CategoryDb().incomeCategoryList
-                                  : CategoryDb().expenseCategoryList)
-                              .value
+                                  ? Provider.of<CategoryProvider>(context,
+                                          listen: false)
+                                      .incomeCategoryList
+                                  : Provider.of<CategoryProvider>(context,
+                                          listen: false)
+                                      .expenseCategoryList)
                               .map((e) {
                             return DropdownMenuItem(
                                 value: e.id,
@@ -204,8 +208,10 @@ class ScreenAddTransaction extends StatelessWidget {
               key: data.formKey,
               child: TextFormField(
                 maxLength: 12,
-                validator: (value) => data.addCategory(value),
-                controller: categoryNameController,
+                validator: (value) => data.addCategory(value, context),
+                controller:
+                    Provider.of<CategoryProvider>(context, listen: false)
+                        .categoryNameController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.edit),
@@ -221,7 +227,7 @@ class ScreenAddTransaction extends StatelessWidget {
                   onPressed: () {
                     Provider.of<HomeScreenProvider>(context, listen: false)
                         .navigatorPop(context);
-                    data.categoryClear();
+                    data.categoryClear(context);
                   },
                   child: const Text('CANCEL'),
                 ),
