@@ -1,42 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/DB/functions/category/category_db.dart';
-import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
-import 'package:moneywallet/home/statistics/screen_expense_statistics.dart';
-import 'package:moneywallet/home/statistics/screen_income_statistics.dart';
-import 'package:moneywallet/home/statistics/screen_nodatafound.dart';
-import 'package:moneywallet/home/statistics/screen_overview_statistics.dart';
+import 'package:moneywallet/home/category/controller/provider/category_provider.dart';
+import 'package:moneywallet/home/statistics/view/screen_expense_statistics.dart';
+import 'package:moneywallet/home/statistics/view/screen_income_statistics.dart';
+import 'package:moneywallet/home/statistics/view/screen_overview_statistics.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:moneywallet/widget/tabbar_widget.dart';
 import 'package:provider/provider.dart';
+import '../../transaction/controller/provider/transaction_provider.dart';
+import '../widgets/screen_nodatafound.dart';
 
-import '../transaction/controller/provider/transaction_provider.dart';
-
-class ScreenStatistics extends StatefulWidget {
+class ScreenStatistics extends StatelessWidget {
   const ScreenStatistics({Key? key}) : super(key: key);
 
   @override
-  State<ScreenStatistics> createState() => _ScreenStatisticsState();
-}
-
-class _ScreenStatisticsState extends State<ScreenStatistics>
-    with TickerProviderStateMixin {
-  String? category;
-  late String dropdownvalueDay;
-  late String dropdownvalueCategory;
-  late TabController tabController;
-
-  @override
-  void initState() {
-    TransactionDb.instence.refreshUI();
-    CategoryDb.instence.refreshUI();
-    tabController = TabController(length: 3, vsync: this);
-    dropdownvalueCategory = 'All';
-    dropdownvalueDay = 'All';
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final dataT = Provider.of<TransactionProvider>(context, listen: false);
+    final dataC = Provider.of<CategoryProvider>(context, listen: false);
+    final tabController = TabController(length: 3, vsync: Scaffold.of(context));
+    dataT.transactionRefresh();
+    dataC.refreshUI();
     return SafeArea(
       child: Scaffold(
         body: Padding(

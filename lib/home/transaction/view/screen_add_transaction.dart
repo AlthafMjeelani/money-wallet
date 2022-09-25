@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../category/model/category_typemodel.dart';
-import '../../category/view/screen_category.dart';
 import '../model/enum.dart';
 
 class ScreenAddTransaction extends StatelessWidget {
@@ -40,8 +39,8 @@ class ScreenAddTransaction extends StatelessWidget {
       data.selectedCategoryType = CategoryType.income;
       data.dateController.clear();
       data.amountController.clear();
-      TransactionDb.instence.refreshUI();
-      CategoryDb.instence.refreshUI();
+      data.transactionRefresh();
+      Provider.of<CategoryProvider>(context, listen: false).refreshUI();
     }
     return Scaffold(
       appBar: AppBar(

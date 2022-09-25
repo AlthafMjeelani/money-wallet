@@ -5,7 +5,7 @@ import '../../../../DB/functions/transaction/transaction_db.dart';
 import '../../../../widget/snackbar_widget.dart';
 import '../../../category/view/screen_category.dart';
 import '../../../settings/screen_settings.dart';
-import '../../../statistics/screen_satistics.dart';
+import '../../../statistics/view/screen_satistics.dart';
 import '../../../transaction/controller/provider/transaction_provider.dart';
 import '../../../transaction/model/transaction_modal.dart';
 import '../../view/screen_home.dart';

@@ -36,8 +36,8 @@ class ScreenViewTransaction extends StatelessWidget {
                   ? IconButton(
                       onPressed: () {
                         value.visibilitysearch();
-                        value.dropdownvalueCategory;
-                        value.dropdownvalueDay;
+                        value.dropdownvalueCategory = 'All';
+                        value.dropdownvalueDay = 'All';
                         value.checkFilter();
                       },
                       icon: const Icon(Icons.close),
@@ -45,8 +45,8 @@ class ScreenViewTransaction extends StatelessWidget {
                   : IconButton(
                       onPressed: () {
                         value.visibilitysearch();
-                        value.dropdownvalueCategory;
-                        value.dropdownvalueDay;
+                        value.dropdownvalueCategory = 'All';
+                        value.dropdownvalueDay = 'All';
                         value.checkFilter();
                       },
                       icon: const Icon(Icons.search),

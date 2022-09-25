@@ -3,7 +3,7 @@ import 'package:moneywallet/home/category/controller/provider/category_provider.
 import 'package:moneywallet/widget/screen_delete_items.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import '../../statistics/screen_nodatafound.dart';
+import '../../statistics/widgets/screen_nodatafound.dart';
 
 class IncomeCategoryList extends StatelessWidget {
   const IncomeCategoryList({
