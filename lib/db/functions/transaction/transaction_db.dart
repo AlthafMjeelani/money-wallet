@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../../home/transaction/model/transaction_modal.dart';
+import '../../../screen/transaction/model/transaction_modal.dart';
 
 // ignore: constant_identifier_names
 const TRANSACTION_DB_NAME = 'TRANSACTION-DB';

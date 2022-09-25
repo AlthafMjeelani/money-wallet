@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/fonts/reminder/reminder_local_notification.dart';
-import 'package:moneywallet/home/Homescreen/controller/provider/bottom_navbar_provider.dart';
-import 'package:moneywallet/home/Homescreen/controller/provider/home_screen_provider.dart';
-import 'package:moneywallet/home/category/controller/provider/category_provider.dart';
-import 'package:moneywallet/home/transaction/controller/provider/view_transaction_provider.dart';
-import 'package:moneywallet/home/welcome/controller/provider/LoginProvider/login_provider.dart';
-import 'package:moneywallet/home/welcome/controller/provider/spalshProvider/welcome_provider.dart';
-import 'package:moneywallet/home/welcome/view/screen_splash.dart';
+import 'package:moneywallet/screen/Homescreen/controller/provider/bottom_navbar_provider.dart';
+import 'package:moneywallet/screen/Homescreen/controller/provider/home_screen_provider.dart';
+import 'package:moneywallet/screen/category/controller/provider/category_provider.dart';
+import 'package:moneywallet/screen/category/model/category_modal.dart';
+import 'package:moneywallet/screen/category/model/category_typemodel.dart';
+import 'package:moneywallet/screen/settings/controller/provider/settings_provider.dart';
+import 'package:moneywallet/screen/transaction/controller/provider/transaction_provider.dart';
+import 'package:moneywallet/screen/transaction/controller/provider/view_transaction_provider.dart';
+import 'package:moneywallet/screen/transaction/model/transaction_modal.dart';
+import 'package:moneywallet/screen/welcome/controller/provider/LoginProvider/login_provider.dart';
+import 'package:moneywallet/screen/welcome/controller/provider/spalshProvider/welcome_provider.dart';
+import 'package:moneywallet/screen/welcome/view/screen_splash.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-
-import 'home/category/model/category_modal.dart';
-import 'home/category/model/category_typemodel.dart';
-import 'home/transaction/controller/provider/transaction_provider.dart';
-import 'home/transaction/model/transaction_modal.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +58,9 @@ void main() async {
         ),
         ChangeNotifierProvider<CategoryProvider>(
           create: (_) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          create: (_) => SettingsProvider(),
         ),
       ],
       child: const MyApp(),

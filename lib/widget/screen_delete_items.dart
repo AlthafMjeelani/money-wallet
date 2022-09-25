@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/home/category/controller/provider/category_provider.dart';
 import 'package:provider/provider.dart';
-
-import '../home/category/model/category_modal.dart';
+import '../screen/category/controller/provider/category_provider.dart';
+import '../screen/category/model/category_modal.dart';
 
 class DeleteCategory {
   Future<void> deleteItem(

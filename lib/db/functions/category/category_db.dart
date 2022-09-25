@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../../home/category/model/category_modal.dart';
+import '../../../screen/category/model/category_modal.dart';
 
 // ignore: constant_identifier_names
 const CATEGORY_DB_NAME = 'CATEGORY-DB';
