@@ -16,8 +16,10 @@ class ScreenSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     log('build called');
     final data = Provider.of<SettingsProvider>(context, listen: false);
-    data.getBool();
-    NotificationApi.init(initSheduled: true);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      data.getBool();
+      NotificationApi.init(initSheduled: true);
+    });
     return SafeArea(
       child: Scaffold(
           body: Padding(

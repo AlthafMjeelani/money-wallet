@@ -13,12 +13,14 @@ class ScreenOverviewStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<TransactionProvider>(context, listen: false);
-    data.transactionRefresh();
     Map<String, double> statistics = {
       "Income": data.totalIncome.toDouble(),
       "Expense": data.totalExpense.toDouble(),
       "Total Balance": data.totalBalence.toDouble(),
     };
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      data.transactionRefresh();
+    });
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

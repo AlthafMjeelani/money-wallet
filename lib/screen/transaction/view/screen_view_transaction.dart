@@ -20,10 +20,13 @@ class ScreenViewTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = Provider.of<ViewTransactionProvider>(context, listen: false);
     final dbdata = Provider.of<TransactionProvider>(context, listen: false);
-    dbdata.transactionRefresh();
-    data.dropdownvalueCategory = 'All';
-    data.dropdownvalueDay = 'All';
-    data.foundData = data.allData;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      dbdata.transactionRefresh();
+      data.search = false;
+      data.dropdownvalueCategory = 'All';
+      data.dropdownvalueDay = 'All';
+      data.foundData = data.allData;
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text(' All Transactions'),

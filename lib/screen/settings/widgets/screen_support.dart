@@ -1,15 +1,11 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../Homescreen/controller/provider/home_screen_provider.dart';
 import '../controller/provider/settings_provider.dart';
 
-final Uri urlcall = Uri.parse('tel:+91-8086689184');
-
 class Support {
   Future<void> aboutApp(BuildContext context) async {
+    final data = Provider.of<SettingsProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (ctx) {
@@ -30,7 +26,7 @@ class Support {
             Center(
               child: TextButton.icon(
                 onPressed: () {
-                  launchCall();
+                  data.launchCall();
                 },
                 label: const Text('Contact: +91-8086689184'),
                 icon: const Icon(Icons.phone_android),
@@ -49,16 +45,6 @@ class Support {
         );
       },
     );
-  }
-
-  Future<void> launchCall() async {
-    try {
-      await launchUrl(urlcall);
-    } catch (e) {
-      log(
-        e.toString(),
-      );
-    }
   }
 
   Future<void> resetApp(context) async {

@@ -10,7 +10,9 @@ class ScreenSplash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<WelcomeProvidfer>(context, listen: false).gotoHome(context);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<WelcomeProvidfer>(context, listen: false).gotoHome(context);
+    });
     return SafeArea(
       child: Scaffold(
         body: Column(

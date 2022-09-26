@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneywallet/screen/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:provider/provider.dart';
 import '../screen/category/controller/provider/category_provider.dart';
 import '../screen/category/model/category_modal.dart';
@@ -14,7 +15,8 @@ class DeleteCategory {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Provider.of<HomeScreenProvider>(context, listen: false)
+                    .navigatorPop(context);
               },
               child: const Text('CANCEL'),
             ),
@@ -32,8 +34,8 @@ class DeleteCategory {
                 ));
                 Provider.of<CategoryProvider>(context, listen: false)
                     .refreshUI();
-
-                Navigator.of(context).pop();
+                Provider.of<HomeScreenProvider>(context, listen: false)
+                    .navigatorPop(context);
               },
               child: const Text('OK'),
             ),

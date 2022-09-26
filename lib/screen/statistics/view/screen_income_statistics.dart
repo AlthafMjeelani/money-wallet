@@ -12,10 +12,12 @@ class ScreenIncomeStatistics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final values = Provider.of<TransactionProvider>(context, listen: false);
-    values.transactionRefresh();
     final data = Provider.of<ViewTransactionProvider>(context, listen: false);
-    data.dropdownvalueCategory;
+    final values = Provider.of<TransactionProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      values.transactionRefresh();
+      data.dropdownvalueCategory;
+    });
     return SfCircularChart(
       legend: Legend(isVisible: true),
       series: <CircularSeries>[

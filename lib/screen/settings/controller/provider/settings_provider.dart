@@ -15,6 +15,7 @@ import '../../../welcome/view/screen_splash.dart';
 
 class SettingsProvider with ChangeNotifier {
   final Uri url = Uri.parse('mailto:althafjeelani159@gmail.com');
+  final Uri urlcall = Uri.parse('tel:+91-8086689184');
   late Time pickedTime;
   final formKey = GlobalKey<FormState>();
   TextEditingController timePicker = TextEditingController();
@@ -120,7 +121,7 @@ class SettingsProvider with ChangeNotifier {
 
                           NotificationApi().showScheduledNotification(
                             title: 'Notification',
-                            body: 'hy.${labalText.text}',
+                            body: labalText.text,
                             payload: '',
                             sheduleddatetime: pickedTime,
                           );
@@ -161,6 +162,16 @@ class SettingsProvider with ChangeNotifier {
       );
     }
     notifyListeners();
+  }
+
+  Future<void> launchCall() async {
+    try {
+      await launchUrl(urlcall);
+    } catch (e) {
+      log(
+        e.toString(),
+      );
+    }
   }
 
   Future<void> resetALLData() async {

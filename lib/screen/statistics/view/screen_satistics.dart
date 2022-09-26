@@ -17,8 +17,10 @@ class ScreenStatistics extends StatelessWidget {
     final dataT = Provider.of<TransactionProvider>(context, listen: false);
     final dataC = Provider.of<CategoryProvider>(context, listen: false);
     final tabController = TabController(length: 3, vsync: Scaffold.of(context));
-    dataT.transactionRefresh();
-    dataC.refreshUI();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      dataT.transactionRefresh();
+      dataC.refreshUI();
+    });
     return SafeArea(
       child: Scaffold(
         body: Padding(

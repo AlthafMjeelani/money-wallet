@@ -10,6 +10,7 @@ import '../../category/model/category_typemodel.dart';
 import '../controller/provider/transaction_provider.dart';
 import '../model/enum.dart';
 import '../model/transaction_modal.dart';
+import '../widgets/radiobutton_widget.dart';
 
 class ScreenAddTransaction extends StatelessWidget {
   ScreenAddTransaction({
@@ -63,41 +64,7 @@ class ScreenAddTransaction extends StatelessWidget {
                   "Select your category",
                   style: TextStyle(fontSize: 10.sp),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 22),
-                  child: Consumer(
-                    builder: (BuildContext context, TransactionProvider value,
-                        Widget? child) {
-                      return Row(
-                        children: [
-                          Expanded(
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.all(0),
-                              horizontalTitleGap: 0,
-                              title: const Text("Income"),
-                              leading: Radio(
-                                value: CategoryType.income,
-                                groupValue: value.selectedCategoryType,
-                                onChanged: (value) => data.incomeRadioButton(),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListTile(
-                              horizontalTitleGap: 0,
-                              title: const Text("Expense"),
-                              leading: Radio(
-                                value: CategoryType.expense,
-                                groupValue: value.selectedCategoryType,
-                                onChanged: (value) => data.expenseRadioButton(),
-                              ),
-                            ),
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                const RadioButtonWidget(),
                 Consumer(
                   builder: (BuildContext context, TransactionProvider values,
                       Widget? child) {
@@ -165,17 +132,18 @@ class ScreenAddTransaction extends StatelessWidget {
                   height: 2.h,
                 ),
                 TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) => data.validator(value, 'Select Date'),
-                    controller: data.dateController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        icon: Icon(Icons.calendar_today),
-                        labelText: "Select Date"),
-                    readOnly: true,
-                    onTap: () async => data.pickDate(
-                          context,
-                        )),
+                  // autovalidateMode: AutovalidateMode.onUserInteraction,
+                  validator: (value) => data.validator(value, 'Select Date'),
+                  controller: data.dateController,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      icon: Icon(Icons.calendar_today),
+                      labelText: "Select Date"),
+                  readOnly: true,
+                  onTap: () async => data.pickDate(
+                    context,
+                  ),
+                ),
                 SizedBox(
                   height: 4.h,
                 ),

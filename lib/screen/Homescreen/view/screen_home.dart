@@ -7,6 +7,7 @@ import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../category/controller/provider/category_provider.dart';
 import '../../transaction/controller/provider/transaction_provider.dart';
 
 class ScreenHome extends StatelessWidget {
@@ -14,13 +15,15 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TransactionProvider>(context, listen: false)
-          .transactionRefresh();
-    });
     final data = Provider.of<HomeScreenProvider>(context, listen: false);
-    data.getName();
-    CategoryDb.instence.refreshUI();
+    final categoryData = Provider.of<CategoryProvider>(context, listen: false);
+    final transactionData =
+        Provider.of<TransactionProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      transactionData.transactionRefresh();
+      data.getName();
+      categoryData.refreshUI();
+    });
 
     return SafeArea(
       child: Scaffold(

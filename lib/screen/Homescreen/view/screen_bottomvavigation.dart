@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:moneywallet/screen/Homescreen/controller/provider/bottom_navbar_provider.dart';
 import 'package:moneywallet/screen/Homescreen/controller/support/list_of_pages.dart';
+import 'package:moneywallet/screen/category/controller/provider/category_provider.dart';
+import 'package:moneywallet/screen/transaction/controller/provider/transaction_provider.dart';
 import 'package:provider/provider.dart';
-import '../../../DB/functions/category/category_db.dart';
 
 class ScreenBottomNavbar extends StatelessWidget {
   const ScreenBottomNavbar({
@@ -15,8 +14,11 @@ class ScreenBottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log('build called');
-    TransactionDb.instence.refreshUI();
-    CategoryDb.instence.refreshUI();
+    final transactionData =
+        Provider.of<TransactionProvider>(context, listen: false);
+    final categoryData = Provider.of<CategoryProvider>(context, listen: false);
+    transactionData.transactionRefresh();
+    categoryData.refreshUI();
     return Consumer<BottomNavbarProvider>(
       builder:
           (BuildContext context, BottomNavbarProvider value, Widget? child) {

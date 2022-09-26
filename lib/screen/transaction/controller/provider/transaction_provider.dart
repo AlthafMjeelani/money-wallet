@@ -61,7 +61,6 @@ class TransactionProvider with ChangeNotifier {
       return;
     }
     dateController.text = DateFormat('yMMMMd').format(pickedDate!);
-
     notifyListeners();
   }
 

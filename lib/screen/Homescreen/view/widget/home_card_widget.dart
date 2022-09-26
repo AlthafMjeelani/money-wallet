@@ -11,8 +11,10 @@ class HomeCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<TransactionProvider>(context, listen: false)
-        .addTotalTransaction();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TransactionProvider>(context, listen: false)
+          .addTotalTransaction();
+    });
 
     return Container(
       decoration: BoxDecoration(
