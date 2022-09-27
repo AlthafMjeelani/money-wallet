@@ -150,9 +150,11 @@ class ViewTransactionProvider with ChangeNotifier {
       results = allData;
     } else {
       results = allData
-          .where((user) => user.category.name
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
+          .where(
+            (user) => user.category.name.toLowerCase().contains(
+                  enteredKeyword.toLowerCase(),
+                ),
+          )
           .toList();
     }
 

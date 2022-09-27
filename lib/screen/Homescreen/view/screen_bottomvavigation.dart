@@ -19,13 +19,14 @@ class ScreenBottomNavbar extends StatelessWidget {
     final categoryData = Provider.of<CategoryProvider>(context, listen: false);
     transactionData.transactionRefresh();
     categoryData.refreshUI();
+
     return Consumer<BottomNavbarProvider>(
       builder:
           (BuildContext context, BottomNavbarProvider value, Widget? child) {
         return WillPopScope(
           onWillPop: () async {
             await value.bottomNavbar();
-            return true;
+            return false;
           },
           child: Scaffold(
             body: HomeScreenSupport.screens[value.currentPageIndex],
