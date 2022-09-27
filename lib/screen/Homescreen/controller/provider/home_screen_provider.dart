@@ -43,7 +43,6 @@ class HomeScreenProvider with ChangeNotifier {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => ScreenAddTransaction(
-          index: index,
           type: ActionType.editscreen,
           modal: value,
           id: id,

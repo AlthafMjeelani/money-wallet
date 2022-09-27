@@ -20,12 +20,12 @@ class ScreenViewTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = Provider.of<ViewTransactionProvider>(context, listen: false);
     final dbdata = Provider.of<TransactionProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      dbdata.transactionRefresh();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       data.search = false;
       data.dropdownvalueCategory = 'All';
       data.dropdownvalueDay = 'All';
       data.foundData = data.allData;
+      data.initialDataSetting();
     });
     return Scaffold(
       appBar: AppBar(
@@ -227,10 +227,11 @@ class ScreenViewTransaction extends StatelessWidget {
                                                           MaterialPageRoute(
                                                             builder: (ctx) =>
                                                                 ScreenAddTransaction(
-                                                              index: index,
                                                               type: ActionType
                                                                   .editscreen,
-                                                              modal: value,
+                                                              modal:
+                                                                  data.foundData[
+                                                                      index],
                                                               id: data
                                                                   .model?.id,
                                                             ),

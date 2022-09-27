@@ -85,6 +85,8 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
+ 
+
   Future<void> addTotalTransaction() async {
     final allTransaction = await TransactionDb.instence.refreshUI();
     incomeTransaction.clear();

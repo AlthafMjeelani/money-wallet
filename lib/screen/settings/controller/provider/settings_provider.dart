@@ -104,7 +104,7 @@ class SettingsProvider with ChangeNotifier {
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
-
+                        getBool();
                         isSwitched = false;
                         timePicker.clear();
                         labalText.clear();

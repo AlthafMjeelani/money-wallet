@@ -171,6 +171,12 @@ class ViewTransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void initialDataSetting() {
+    final data = allData;
+    foundData = data;
+    notifyListeners();
+  }
+
   Future<void> deleteItem(TransactionModel modal, BuildContext context) async {
     showDialog(
       context: context,

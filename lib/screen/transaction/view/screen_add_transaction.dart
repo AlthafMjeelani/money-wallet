@@ -15,13 +15,11 @@ import '../widgets/radiobutton_widget.dart';
 class ScreenAddTransaction extends StatelessWidget {
   ScreenAddTransaction({
     Key? key,
-    this.index,
     this.type,
     this.modal,
     this.id,
   }) : super(key: key);
 
-  int? index;
   String? id;
   ActionType? type;
   TransactionModel? modal;
