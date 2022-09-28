@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:moneywallet/screen/category/view/widget/add_category.dart';
+import 'package:moneywallet/screen/transaction/widgets/add_category.dart';
+import 'package:moneywallet/screen/transaction/widgets/add_transaction.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import '../../../screen/Homescreen/view/screen_bottomvavigation.dart';
 import '../../category/controller/provider/category_provider.dart';
 import '../../category/model/category_typemodel.dart';
 import '../controller/provider/transaction_provider.dart';
@@ -29,16 +31,7 @@ class ScreenAddTransaction extends StatelessWidget {
     final data = Provider.of<TransactionProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CategoryProvider>(context, listen: false).refreshUI();
-      if (type == ActionType.editscreen) {
-        data.dateController.text = DateFormat('yMMMMd').format(modal!.date);
-        data.amountController.text = modal!.amount.toString();
-        data.selectedCategoryType = modal!.type;
-      } else {
-        data.selectedCategoryType = CategoryType.income;
-        data.dateController.clear();
-        data.amountController.clear();
-        data.transactionRefresh();
-      }
+      data.addOrEdit(modal, type);
     });
     return Scaffold(
       appBar: AppBar(
@@ -72,12 +65,12 @@ class ScreenAddTransaction extends StatelessWidget {
                         DropdownButtonFormField<String>(
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           validator: (value) =>
-                              data.validator(value, 'select cetegory'),
+                              data.validator(value, 'select category'),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             icon: Icon(Icons.category),
                           ),
-                          hint: const Text('select cetegory'),
+                          hint: const Text('select category'),
                           value: values.dropdownvalueCategory,
                           onChanged: (newValue) {
                             values.dropDownValues(newValue);
@@ -101,7 +94,7 @@ class ScreenAddTransaction extends StatelessWidget {
                         ),
                         TextButton.icon(
                           onPressed: () async {
-                            await values.addcategory(context);
+                            await AddTranCategoryFunction.addcategory(context);
                           },
                           label: const Text('New Category'),
                           icon: const Icon(Icons.add),
@@ -198,20 +191,8 @@ class ScreenAddTransaction extends StatelessWidget {
       }
       data.textFeildClear();
       data.dropdownvalueCategory = null;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        duration: Duration(seconds: 1),
-        elevation: 20,
-        content: Text(
-          'Transaction successfully added',
-        ),
-        backgroundColor: Colors.green,
-      ));
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ScreenBottomNavbar(),
-          ),
-          (route) => false);
+      data.show(context, 'Transaction Successfully Added');
+      data.navigatorToBottom(context);
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../DB/functions/category/category_db.dart';
 import '../../../../widget/snackbar_widget.dart';
 import '../../../../screen/Homescreen/controller/provider/home_screen_provider.dart';
+import '../../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../../category/controller/provider/category_provider.dart';
 import '../../../category/model/category_modal.dart';
 import '../../../category/model/category_typemodel.dart';
@@ -27,9 +28,6 @@ class TransactionProvider with ChangeNotifier {
   CategoryType selectedCategoryType = CategoryType.income;
   CategoryModel? selectedCategoryModel;
   String? dropdownvalueCategory;
-  ActionType? type;
-  TransactionModel? modal;
-  String? id;
 
   void incomeRadioButton() {
     selectedCategoryType = CategoryType.income;
@@ -84,8 +82,6 @@ class TransactionProvider with ChangeNotifier {
     allTransactionList.addAll(allTransaction);
     notifyListeners();
   }
-
- 
 
   Future<void> addTotalTransaction() async {
     final allTransaction = await TransactionDb.instence.refreshUI();
@@ -156,6 +152,16 @@ class TransactionProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void show(context, String text) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      duration: const Duration(seconds: 1),
+      elevation: 20,
+      content: Text(text),
+      backgroundColor: Colors.green,
+    ));
+    notifyListeners();
+  }
+
   void submitCategory(context) {
     if (formKey.currentState!.validate()) {
       final categoryName = Provider.of<CategoryProvider>(context, listen: false)
@@ -177,8 +183,6 @@ class TransactionProvider with ChangeNotifier {
       Provider.of<HomeScreenProvider>(context, listen: false)
           .navigatorPop(context);
       Provider.of<CategoryProvider>(context, listen: false).refreshUI();
-
-      SnackBarWidget().show(context, 'successfully added to categorylist');
     }
     notifyListeners();
   }
@@ -190,116 +194,27 @@ class TransactionProvider with ChangeNotifier {
     return null;
   }
 
-  Future<void> addcategory(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (ctx) {
-        return SimpleDialog(
-          contentPadding: const EdgeInsets.all(10),
-          children: [
-            Form(
-              key: formKey,
-              child: TextFormField(
-                maxLength: 12,
-                validator: (value) => addCategory(value, context),
-                controller:
-                    Provider.of<CategoryProvider>(context, listen: false)
-                        .categoryNameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.edit),
-                  labelText: 'Enter category name',
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Provider.of<HomeScreenProvider>(context, listen: false)
-                        .navigatorPop(context);
-                    categoryClear(context);
-                  },
-                  child: const Text('CANCEL'),
-                ),
-                const Spacer(),
-                TextButton(
-                  onPressed: () => submitCategory(context),
-                  child: const Text('ADD'),
-                ),
-              ],
-            )
-          ],
-        );
-      },
-    );
+  void navigatorToBottom(context) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ScreenBottomNavbar(),
+        ),
+        (route) => false);
+    notifyListeners();
   }
 
-  //  void naviagtioViewToEdit(context, index, value) {
-  //   Navigator.of(context).push(
-  //     MaterialPageRoute(
-  //       builder: (ctx) => ScreenAddTransaction(
-  //         index: index,
-  //         type: ActionType.editscreen,
-  //         modal: value,
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // void transactionSubmit(context) {
-  //   final data = Provider.of<TransactionProvider>(context, listen: false);
-  //   if (data.formKeyAlert.currentState!.validate()) {
-  //     final amount = data.amountController.text;
-
-  //     if (amount.isEmpty) {
-  //       return;
-  //     }
-
-  //     final parsedAmount = double.tryParse(amount);
-  //     if (parsedAmount == null) {
-  //       return;
-  //     }
-  //     data.pickedDate ??= modal?.date;
-  //     if (data.selectedCategoryModel == null) {
-  //       return;
-  //     }
-
-  //     TransactionModel dbModel = TransactionModel(
-  //       amount: parsedAmount,
-  //       date: pickedDate!,
-  //       type: selectedCategoryType,
-  //       category: selectedCategoryModel!,
-  //       id: type == ActionType.editscreen
-  //           ? modal!.id
-  //           : DateTime.now().millisecondsSinceEpoch.toString(),
-  //     );
-
-  //     if (type == ActionType.editscreen) {
-  //       updateTransaction(dbModel, modal!.id.toString());
-  //     } else {
-  //       addTransaction(dbModel);
-  //     }
-  //     textFeildClear();
-  //     dropdownvalueCategory = null;
-  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-  //       duration: Duration(seconds: 1),
-  //       elevation: 20,
-  //       content: Text(
-  //         'Transaction successfully added',
-  //       ),
-  //       backgroundColor: Colors.green,
-  //     ));
-  //     Navigator.pushAndRemoveUntil(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const ScreenBottomNavbar(),
-  //         ),
-  //         (route) => false);
-  //   }
-  //   notifyListeners();
-  // }
-
+  void addOrEdit(TransactionModel? modal, ActionType? type) {
+    if (type == ActionType.editscreen) {
+      dateController.text = DateFormat('yMMMMd').format(modal!.date);
+      amountController.text = modal.amount.toString();
+      selectedCategoryType = modal.type;
+    } else {
+      selectedCategoryType = CategoryType.income;
+      dateController.clear();
+      amountController.clear();
+      transactionRefresh();
+    }
+    notifyListeners();
+  }
 }

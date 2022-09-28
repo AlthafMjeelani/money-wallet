@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneywallet/screen/Homescreen/controller/provider/home_screen_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../DB/functions/transaction/transaction_db.dart';
@@ -20,6 +21,7 @@ class HomeScreenSupport {
 
   Future<void> deleteItem(
       int index, TransactionModel modal, BuildContext context) async {
+    final data = Provider.of<HomeScreenProvider>(context, listen: false);
     showDialog(
       context: context,
       builder: (ctx) {
@@ -36,8 +38,8 @@ class HomeScreenSupport {
             TextButton(
               onPressed: () {
                 TransactionDb.instence.deleteTransactoin(modal.id);
-                SnackBarWidget()
-                    .show(context, 'Transaction successfully deleted');
+
+                data.show(context, 'Transaction successfully deleted');
                 Navigator.pop(context);
                 Navigator.pop(context);
                 Provider.of<TransactionProvider>(context, listen: false)

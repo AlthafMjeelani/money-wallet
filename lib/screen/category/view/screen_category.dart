@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:moneywallet/screen/category/view/widget/add_category.dart';
 import 'package:moneywallet/widget/scrool_dissable.dart';
 import 'package:moneywallet/widget/tabbar_widget.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,7 @@ class ScreenCategory extends StatelessWidget {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            data.addcategory(
-              context,
-            );
+            data.categorySubmit(context);
           },
           child: const Icon(Icons.add),
         ),

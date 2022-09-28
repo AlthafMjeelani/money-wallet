@@ -27,7 +27,7 @@ class ScreenSettings extends StatelessWidget {
         child: Column(
           children: [
             ListTile(
-              onTap: () => data.addReminder(context),
+              onTap: () => Support.addReminder(context),
               leading: const Icon(Icons.alarm_rounded),
               title: const Text('Reminder'),
               trailing: Consumer(
