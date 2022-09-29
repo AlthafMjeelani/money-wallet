@@ -45,7 +45,6 @@ class AddTranCategoryFunction {
                 TextButton(
                   onPressed: () {
                     data.submitCategory(context);
-                    data.show(context, 'successfully added to categorylist');
                   },
                   child: const Text('ADD'),
                 ),

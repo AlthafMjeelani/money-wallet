@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:moneywallet/DB/functions/transaction/transaction_db.dart';
 import 'package:provider/provider.dart';
 import '../../../../DB/functions/category/category_db.dart';
-import '../../../../widget/snackbar_widget.dart';
 import '../../../../screen/Homescreen/controller/provider/home_screen_provider.dart';
 import '../../../Homescreen/view/screen_bottomvavigation.dart';
 import '../../../category/controller/provider/category_provider.dart';
@@ -44,7 +43,6 @@ class TransactionProvider with ChangeNotifier {
   void dropDownValues(newValue) {
     dropdownvalueCategory = null;
     dropdownvalueCategory = newValue;
-
     notifyListeners();
   }
 
@@ -94,7 +92,6 @@ class TransactionProvider with ChangeNotifier {
       allTransaction,
       (TransactionModel data) {
         totalBalence = totalBalence + data.amount.toDouble();
-
         if (data.type == CategoryType.income) {
           incomeTransaction.add(data);
           totalIncome = totalIncome + data.amount.toDouble();
@@ -112,7 +109,6 @@ class TransactionProvider with ChangeNotifier {
     if (value == null || value.isEmpty) {
       return 'Please enter category name';
     }
-
     if (selectedCategoryType == CategoryType.income) {
       final income = Provider.of<CategoryProvider>(context, listen: false)
           .incomeCategoryList
@@ -144,6 +140,7 @@ class TransactionProvider with ChangeNotifier {
 
   Future<void> addTransaction(TransactionModel transactionModal) async {
     await TransactionDb.instence.addTransaction(transactionModal);
+    notifyListeners();
   }
 
   Future<void> updateTransaction(TransactionModel value, String id) async {
@@ -183,6 +180,7 @@ class TransactionProvider with ChangeNotifier {
       Provider.of<HomeScreenProvider>(context, listen: false)
           .navigatorPop(context);
       Provider.of<CategoryProvider>(context, listen: false).refreshUI();
+      show(context, 'successfully added to categorylist');
     }
     notifyListeners();
   }
@@ -209,11 +207,6 @@ class TransactionProvider with ChangeNotifier {
       dateController.text = DateFormat('yMMMMd').format(modal!.date);
       amountController.text = modal.amount.toString();
       selectedCategoryType = modal.type;
-    } else {
-      selectedCategoryType = CategoryType.income;
-      dateController.clear();
-      amountController.clear();
-      transactionRefresh();
     }
     notifyListeners();
   }

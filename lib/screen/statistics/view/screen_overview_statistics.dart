@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moneywallet/screen/statistics/widgets/statistics_const.dart';
+import 'package:moneywallet/screen/statistics/view/widgets/statistics_const.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';

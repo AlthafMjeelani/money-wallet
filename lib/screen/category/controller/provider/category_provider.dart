@@ -95,6 +95,7 @@ class CategoryProvider with ChangeNotifier {
 
       categoryNameController.clear();
       refreshUI();
+      show(context, 'successfully added to categorylist');
       Navigator.of(context).pop();
     }
     notifyListeners();

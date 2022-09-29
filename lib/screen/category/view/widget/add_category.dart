@@ -43,7 +43,6 @@ class AddCategoryFunction {
                 TextButton(
                   onPressed: () {
                     data.addCategory(context);
-                    data.show(context, 'successfully added to categorylist');
                   },
                   child: const Text('ADD'),
                 ),

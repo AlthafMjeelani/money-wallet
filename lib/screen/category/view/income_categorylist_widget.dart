@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moneywallet/widget/screen_delete_items.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import '../../statistics/widgets/screen_nodatafound.dart';
+import '../../statistics/view/widgets/screen_nodatafound.dart';
 import '../controller/provider/category_provider.dart';
 
 class IncomeCategoryList extends StatelessWidget {

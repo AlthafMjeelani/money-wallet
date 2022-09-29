@@ -1,10 +1,7 @@
 // ignore_for_file: must_be_immutable, must_call_super
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-import 'package:moneywallet/screen/category/view/widget/add_category.dart';
-import 'package:moneywallet/screen/transaction/widgets/add_category.dart';
-import 'package:moneywallet/screen/transaction/widgets/add_transaction.dart';
+import 'package:moneywallet/screen/transaction/view/widgets/add_category.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import '../../category/controller/provider/category_provider.dart';
@@ -12,7 +9,7 @@ import '../../category/model/category_typemodel.dart';
 import '../controller/provider/transaction_provider.dart';
 import '../model/enum.dart';
 import '../model/transaction_modal.dart';
-import '../widgets/radiobutton_widget.dart';
+import 'widgets/radiobutton_widget.dart';
 
 class ScreenAddTransaction extends StatelessWidget {
   ScreenAddTransaction({
@@ -29,10 +26,14 @@ class ScreenAddTransaction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<TransactionProvider>(context, listen: false);
+    data.amountController.clear();
+    data.dateController.clear();
+    data.selectedCategoryType = CategoryType.income;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<CategoryProvider>(context, listen: false).refreshUI();
       data.addOrEdit(modal, type);
     });
+
     return Scaffold(
       appBar: AppBar(
         title: type == ActionType.addscreen

@@ -8,6 +8,7 @@ import 'package:moneywallet/screen/category/controller/provider/category_provide
 import 'package:moneywallet/screen/category/model/category_modal.dart';
 import 'package:moneywallet/screen/category/model/category_typemodel.dart';
 import 'package:moneywallet/screen/settings/controller/provider/settings_provider.dart';
+import 'package:moneywallet/screen/statistics/controller/statistics_provider.dart';
 import 'package:moneywallet/screen/transaction/controller/provider/transaction_provider.dart';
 import 'package:moneywallet/screen/transaction/controller/provider/view_transaction_provider.dart';
 import 'package:moneywallet/screen/transaction/model/transaction_modal.dart';
@@ -61,6 +62,9 @@ void main() async {
         ),
         ChangeNotifierProvider<SettingsProvider>(
           create: (_) => SettingsProvider(),
+        ),
+        ChangeNotifierProvider<StatisticsProvider>(
+          create: (_) => StatisticsProvider(),
         ),
       ],
       child: const MyApp(),

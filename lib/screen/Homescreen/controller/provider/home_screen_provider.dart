@@ -53,6 +53,7 @@ class HomeScreenProvider with ChangeNotifier {
 
   void navigatorPop(context) {
     Navigator.of(context).pop();
+    notifyListeners();
   }
 
   void naviagtorPushView(

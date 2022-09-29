@@ -7,7 +7,7 @@ import 'package:moneywallet/widget/tabbar_widget.dart';
 import 'package:provider/provider.dart';
 import '../../category/controller/provider/category_provider.dart';
 import '../../transaction/controller/provider/transaction_provider.dart';
-import '../widgets/screen_nodatafound.dart';
+import 'widgets/screen_nodatafound.dart';
 
 class ScreenStatistics extends StatelessWidget {
   const ScreenStatistics({Key? key}) : super(key: key);
